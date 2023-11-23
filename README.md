@@ -1,7 +1,6 @@
 ---
 ---
 <p align="center">
-  <img width="400" height="400" src="https://user-images.githubusercontent.com/87246847/193861774-57ee96f0-aaa5-4ba7-b5da-1707ffc122b9.gif"><br>
  <b>The Official vorp premade server.</b>
 </p>
 
