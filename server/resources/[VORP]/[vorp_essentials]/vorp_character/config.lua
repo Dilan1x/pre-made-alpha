@@ -10,19 +10,30 @@ Lang = "English"
 Config.BannedNames = { "Arthur", "Marshton", "Shit", "Dick" } --* you can add more words
 
 Config.AllowPlayerDeleteCharacter = true
--- item name for second chance character
-Config.secondChanceItem = "secondchance"
+
 -- after creating character player will spawn here
 Config.SpawnCoords = {
     position = vector3(-67.27, -392.34, 71.79),
     heading = 171.98
 }
 
+Config.ShowGold = true -- this will show gold next to money in character selection
+
+Config.Webhook = {
+    deleteCharacter = ''
+}
+-- in here you can add multiple checks from other script to prevent players from using Rc command
+Config.CanRunReload = function()
+    -- callback ?
+    -- statbebag ?
+    return true -- dont touch
+end
+
 -- * PLAYER SELECTION MENU * --
 -- loactions will be random each restart
 -- max characters in vorp core will have to match the number of positions
 Config.SpawnPosition = {
-    -- location 1 vanhorn
+    -- Vanhorn
     {
         options = {
             timecycle = { name = "teaser_trainShot", strenght = 1.0 },                                         -- you can find more in RDR3 discoveries github
@@ -123,7 +134,82 @@ Config.SpawnPosition = {
             },
         }
     },
-    -- armadillo saloon
+    -- Vanhorn 2
+    {
+        options = {
+            timecycle = { name = "Finale1_outrohighhon_bidging2", strenght = 1.0 },
+            music     = "",
+            weather   = { type = "sunny", transition = 10, snow = false },
+            time      = { hour = 10, transition = 10 },
+            playerpos = vector3(2963.14, 561.10, 44.68),
+            mainCam   = { x = 2964.07, y = 558.95, z = 44.42, rotx = 1.76, roty = 0.00, rotz = -169.00, fov = 50.0 },
+        },
+        positions = {
+            {
+                spawn    = vector4(2964.51953125, 556.38671875, 44.45668792724609, 0.0),
+                camera   = { x = 2963.80, y = 557.96, z = 44.82, rotx = -2.53, roty = 0.00, rotz = -154.64, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    }
+                }
+            },
+            {
+                spawn    = vector4(2964.10107421875, 555.77001953125, 44.48249816894531, 45.93),
+                camera   = { x = 2962.81, y = 557.48, z = 44.82, rotx = -4.29, roty = 0.00, rotz = -143.99, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+
+                    },
+                }
+            },
+            {
+                spawn    = vector4(2963.728759765625, 554.9774169921875, 44.50360107421875, 40.43),
+                camera   = { x = 2962.59, y = 556.35, z = 44.82, rotx = -2.53, roty = 0.00, rotz = -140.34, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(2965.1533203125, 555.9634399414062, 44.42756271362305, -51.0),
+                camera   = { x = 2965.16, y = 557.78, z = 44.82, rotx = -3.09, roty = 0.00, rotz = -179.39, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(2965.91064453125, 555.1605834960938, 44.42335510253906, -56.0),
+                camera   = { x = 2966.17, y = 557.13, z = 44.82, rotx = -3.28, roty = 0.00, rotz = 172.17, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    }
+                }
+            },
+        }
+    },
+    -- Saloon of Armadillo
     {
         options = {
             timecycle = { name = "teaser_trainShot", strenght = 1.0 },                                             -- you can find more in RDR3 discoveries github
@@ -224,7 +310,598 @@ Config.SpawnPosition = {
             },
         }
     },
-    -- add more here if you want
+    -- Cotorra Springs
+    {
+        options = {
+            timecycle = { name = "finale2_campMoonPos", strenght = 1.0 },
+            music     = "",
+            weather   = { type = "sunny", transition = 10, snow = false },
+            time      = { hour = 10, transition = 10 },
+            playerpos = vector3(240.46421813964844, 1968.3095703125, 206.56849670410156),
+            mainCam   = { x = 241.50, y = 1966.36, z = 205.82, rotx = 0.13, roty = 0.00, rotz = 177.52, fov = 55.0 },
+        },
+        positions = {
+            {
+                spawn    = vector4(241.28634643554688, 1963.6492919921875, 205.7147674560547, -13.41),
+                camera   = { x = 241.03, y = 1965.26, z = 205.98, rotx = 2.47, roty = 0.00, rotz = -170.29, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A",
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A",
+                    }
+                }
+            },
+            {
+                spawn    = vector4(240.3826904296875, 1962.885986328125, 205.5716094970703, 0.90),
+                camera   = { x = 239.81, y = 1964.61, z = 205.92, rotx = 0.27, roty = 0.00, rotz = -160.84, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D",
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D",
+                    },
+                }
+            },
+            {
+                spawn    = vector4(239.3123321533203, 1962.4949951171875, 205.47006225585938, -1.40),
+                camera   = { x = 239.01, y = 1964.32, z = 205.58, rotx = 2.46, roty = 0.00, rotz = -168.28, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A",
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A",
+                    },
+                }
+            },
+            {
+                spawn    = vector4(242.06687927246094, 1962.82861328125, 205.6053924560547, -47.0),
+                camera   = { x = 242.81, y = 1964.24, z = 205.95, rotx = -1.18, roty = 0.00, rotz = 154.06, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_C",
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_C",
+                    },
+                }
+            },
+            {
+                spawn    = vector4(242.54800415039062, 1961.7637939453125, 205.44102478027344, -44.0),
+                camera   = { x = 243.38, y = 1963.29, z = 205.83, rotx = -1.75, roty = 0.00, rotz = 152.17, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "WORLD_HUMAN_SMOKE",
+                    },
+                    mp_male = {
+                        "WORLD_HUMAN_SMOKE",
+                    }
+                }
+            },
+        }
+    },
+    -- Donner Falls
+    {
+        options = {
+            timecycle = { name = "trailer2_shot1", strenght = 1.0 },
+            music     = "",
+            weather   = { type = "sunny", transition = 10, snow = false },
+            time      = { hour = 10, transition = 10 },
+            playerpos = vector3(394.7771301269531, 1672.5684814453125, 127.14893341064453),
+            mainCam   = { x = 397.08, y = 1672.30, z = 128.27, rotx = 4.64, roty = 0.00, rotz = -45.14, fov = 55.0 },
+        },
+        positions = {
+            {
+                spawn    = vector4(399.0948791503906, 1674.13623046875, 128.34893798828125, 121.97),
+                camera   = { x = 398.27, y = 1672.93, z = 128.59, rotx = 3.59, roty = 0.00, rotz = -32.96, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A",
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A",
+                    }
+                }
+            },
+            {
+                spawn    = vector4(400.1960144042969, 1674.1185302734375, 128.2821807861328, 165.66),
+                camera   = { x = 399.36, y = 1672.33, z = 128.59, rotx = -1.39, roty = 0.00, rotz = -24.70, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D",
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D",
+                    },
+                }
+            },
+            {
+                spawn    = vector4(401.34051513671875, 1674.3046875, 128.2012939453125, -158.24),
+                camera   = { x = 400.68, y = 1672.99, z = 128.40, rotx = 4.22, roty = 0.00, rotz = -29.49, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A",
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A",
+                    },
+                }
+            },
+
+            {
+                spawn    = vector4(399.1690979003906, 1675.1075439453125, 128.34046936035156, 78.19),
+                camera   = { x = 397.64, y = 1675.19, z = 128.53, rotx = 1.38, roty = 0.00, rotz = -88.89, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_C",
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_C",
+                    },
+                }
+            },
+            {
+                spawn    = vector4(399.4101867675781, 1676.465087890625, 128.29788208007812, 97.04),
+                camera   = { x = 397.11, y = 1675.48, z = 128.54, rotx = 3.55, roty = 0.00, rotz = -60.97, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "WORLD_HUMAN_SMOKE",
+                    },
+                    mp_male = {
+                        "WORLD_HUMAN_SMOKE",
+                    }
+                }
+            },
+        }
+    },
+    -- The HeartLands 1
+    {
+        options = {
+            timecycle = { name = "martson1_intromod2", strenght = 1.0 },
+            music     = "",
+            weather   = { type = "sunny", transition = 10, snow = false },
+            time      = { hour = 10, transition = 10 },
+            playerpos = vector3(178.41, 121.52, 105.28),
+            mainCam   = { x = 180.76, y = 125.44, z = 104.26, rotx = 4.06, roty = 0.00, rotz = -61.33, fov = 50.0 },
+        },
+        positions = {
+            {
+                spawn    = vector4(182.7963409423828, 126.51189422607422, 104.46258544921875, 122.99),
+                camera   = { x = 181.80, y = 125.43, z = 104.80, rotx = -5.57, roty = 0.00, rotz = -38.77, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    }
+                }
+            },
+            {
+                spawn    = vector4(183.80235290527344, 126.40680694580078, 104.3888931274414, 170.61),
+                camera   = { x = 182.81, y = 125.27, z = 104.80, rotx = -8.41, roty = 0.00, rotz = -41.17, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(184.9395294189453, 126.3748779296875, 104.34683990478516, 178.99),
+                camera   = { x = 183.94, y = 125.05, z = 104.80, rotx = -6.33, roty = 0.00, rotz = -37.45, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(183.17520141601562, 127.44035339355469, 104.51107025146484, 88.93),
+                camera   = { x = 182.02, y = 128.39, z = 104.80, rotx = -4.44, roty = 0.00, rotz = -127.59, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(183.69700622558594, 128.34262084960938, 104.5129165649414, 85.22),
+                camera   = { x = 182.57, y = 129.46, z = 104.80, rotx = -1.98, roty = 0.00, rotz = -134.39, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    }
+                }
+            },
+        }
+    },
+    -- The HeartLands 2
+    {
+        options = {
+            timecycle = { name = "FINALE2_campMoonPos", strenght = 1.0 },
+            music     = "",
+            weather   = { type = "sunny", transition = 10, snow = false },
+            time      = { hour = 10, transition = 10 },
+            playerpos = vector3(484.17, -288.31, 144.68),
+            mainCam   = { x = 486.16, y = -289.88, z = 144.19, rotx = 1.67, roty = 0.00, rotz = -145.28, fov = 50.0 },
+        },
+        positions = {
+            {
+                spawn    = vector4(487.70672607421875, -292.080322265625, 144.1527862548828, 22.96),
+                camera   = { x = 486.31, y = -291.28, z = 144.68, rotx = -8.15, roty = 0.00, rotz = -119.39, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    }
+                }
+            },
+            {
+                spawn    = vector4(487.6447448730469, -293.106689453125, 144.15354919433594, 65.84),
+                camera   = { x = 486.35, y = -292.62, z = 144.68, rotx = -8.22, roty = 0.00, rotz = -110.88, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+
+                    },
+                }
+            },
+            {
+                spawn    = vector4(487.7176208496094, -294.1673278808594, 144.1559295654297, 61.68),
+                camera   = { x = 486.46, y = -293.72, z = 144.68, rotx = -9.48, roty = 0.00, rotz = -110.00, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(488.6108093261719, -292.263916015625, 144.1641082763672, -12.58),
+                camera   = { x = 488.30, y = -290.89, z = 144.68, rotx = -11.11, roty = 0.00, rotz = -168.96, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(489.6289367675781, -292.4676208496094, 144.17864990234375, -17.24),
+                camera   = { x = 489.19, y = -290.84, z = 144.68, rotx = -8.53, roty = 0.00, rotz = -165.81, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    }
+                }
+            },
+        }
+    },
+    -- Swamps 1
+    {
+        options = {
+            timecycle = { name = "Finale1_outrohighhon_bidging2", strenght = 1.0 },
+            music     = "",
+            weather   = { type = "sunny", transition = 10, snow = false },
+            time      = { hour = 10, transition = 10 },
+            playerpos = vector3(2152.28, -609.59, 41.96),
+            mainCam   = { x = 2153.71, y = -611.14, z = 41.40, rotx = 5.92, roty = 0.00, rotz = -135.36, fov = 50.0 },
+        },
+        positions = {
+            {
+                spawn    = vector4(2155.578125, -613.0398559570312, 41.54308700561523, 25.46),
+                camera   = { x = 2154.30, y = -612.19, z = 41.86, rotx = -1.01, roty = 0.00, rotz = -123.52, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    }
+                }
+            },
+            {
+                spawn    = vector4(2155.3779296875, -613.9125366210938, 41.54896926879883, 80.25),
+                camera   = { x = 2153.90, y = -613.56, z = 41.86, rotx = -0.63, roty = 0.00, rotz = -103.11, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+
+                    },
+                }
+            },
+            {
+                spawn    = vector4(2155.763427734375, -615.0479125976562, 41.55394744873047, 70.41),
+                camera   = { x = 2154.14, y = -614.62, z = 41.86, rotx = 1.32, roty = 0.00, rotz = -104.81, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(2156.56884765625, -612.965576171875, 41.54000473022461, -9.0),
+                camera   = { x = 2156.57, y = -611.24, z = 41.95, rotx = -4.41, roty = 0.00, rotz = -178.63, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(2157.820068359375, -613.3458862304688, 41.55184936523437, 5.29),
+                camera   = { x = 2157.74, y = -611.58, z = 41.95, rotx = -3.15, roty = 0.00, rotz = -177.56, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    }
+                }
+            },
+        }
+    },
+    -- Colter
+    {
+        options = {
+            timecycle = { name = "mod5_int_lessfog", strenght = 1.0 },
+            music     = "",
+            weather   = { type = "sunny", transition = 10, snow = false },
+            time      = { hour = 10, transition = 10 },
+            playerpos = vector3(-1325.81, 2474.81, 309.75),
+            mainCam   = { x = -1326.78, y = 2472.99, z = 309.75, rotx = 2.17, roty = 0.00, rotz = -165.38, fov = 50.0 },
+        },
+        positions = {
+            {
+                spawn    = vector4(-1326.1461181640625, 2470.50244140625, 309.5157165527344, 3.5),
+                camera   = { x = -1327.19, y = 2471.72, z = 309.90, rotx = -5.64, roty = 0.00, rotz = -136.97, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    }
+                }
+            },
+            {
+                spawn    = vector4(-1326.5155029296875, 2469.6474609375, 309.48480224609375, 27.79),
+                camera   = { x = -1327.49, y = 2471.00, z = 309.93, rotx = -9.42, roty = 0.00, rotz = -143.21, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+
+                    },
+                }
+            },
+            {
+                spawn    = vector4(-1326.728759765625, 2468.68310546875, 309.46185302734375, 46.91),
+                camera   = { x = -1327.83, y = 2469.80, z = 309.93, rotx = -4.94, roty = 0.00, rotz = -136.53, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(-1325.2999267578125, 2469.999755859375, 309.5245361328125, -17.53),
+                camera   = { x = -1324.98, y = 2471.68, z = 309.93, rotx = -8.09, roty = 0.00, rotz = 168.98, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(-1324.438232421875, 2469.408447265625, 309.5310974121094, -30.19),
+                camera   = { x = -1323.99, y = 2470.97, z = 309.93, rotx = -4.63, roty = 0.00, rotz = 164.38, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    }
+                }
+            },
+        }
+    },
+    -- Manzanita Post
+    {
+        options = {
+            timecycle = { name = "winter4_ride_sunstrength2", strenght = 1.0 },
+            music     = "",
+            weather   = { type = "sunny", transition = 10, snow = false },
+            time      = { hour = 10, transition = 10 },
+            playerpos = vector3(-1957.59, -1612.63, 115.69),
+            mainCam   = { x = -1959.05, y = -1613.00, z = 115.69, rotx = 10.32, roty = 0.00, rotz = 103.69, fov = 50.0 },
+        },
+        positions = {
+            {
+                spawn    = vector4(-1961.74462890625, -1613.662353515625, 115.97038269042969, -91.2),
+                camera   = { x = -1960.22, y = -1612.66, z = 116.28, rotx = 0.87, roty = 0.00, rotz = 124.16, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    }
+                }
+            },
+            {
+                spawn    = vector4(-1962.37548828125, -1613.1929931640625, 116.01429748535156, -37.79),
+                camera   = { x = -1961.40, y = -1611.68, z = 116.28, rotx = -1.33, roty = 0.00, rotz = 148.73, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(-1963.42822265625, -1612.8199462890625, 116.08049011230469, -34.0),
+                camera   = { x = -1962.37, y = -1611.23, z = 116.28, rotx = 1.31, roty = 0.00, rotz = 146.08, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                }
+            },
+
+            {
+                spawn    = vector4(-1962.11572265625, -1614.4964599609375, 116.00640869140625, -133.0),
+                camera   = { x = -1960.49, y = -1614.82, z = 116.28, rotx = -1.33, roty = 0.00, rotz = 77.92, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(-1962.7508544921875, -1615.2008056640625, 116.0385513305664, -148.0),
+                camera   = { x = -1961.18, y = -1615.87, z = 116.28, rotx = 1.12, roty = 0.00, rotz = 68.41, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    }
+                }
+            },
+        }
+    },
+    -- Armadillo Cemetery
+    {
+        options = {
+            timecycle = { name = "finale2_campmoonpos", strenght = 1.0 },
+            music     = "",
+            weather   = { type = "sunny", transition = 10, snow = false },
+            time      = { hour = 10, transition = 10 },
+            playerpos = vector3(-3317.17, -2824.74, -6.07),
+            mainCam   = { x = -3320.76, y = -2823.50, z = -6.07, rotx = 3.21, roty = 0.00, rotz = -175.24, fov = 50.0 },
+        },
+        positions = {
+            {
+                spawn    = vector4(-3320.525634765625, -2826.189697265625, -6.14256906509399, -12.0),
+                camera   = { x = -3321.13, y = -2824.70, z = -5.77, rotx = -5.10, roty = 0.00, rotz = -156.72, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    }
+                }
+            },
+            {
+                spawn    = vector4(-3320.9775390625, -2826.91162109375, -6.20029354095459, 38.11),
+                camera   = { x = -3321.85, y = -2825.28, z = -5.77, rotx = -3.72, roty = 0.00, rotz = -152.49, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(-3321.275146484375, -2827.922607421875, -6.22911691665649, 39.59),
+                camera   = { x = -3322.58, y = -2826.46, z = -5.77, rotx = -6.05, roty = 0.00, rotz = -139.45, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_A"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(-3319.898681640625, -2826.728271484375, -6.10577821731567, -50.86),
+                camera   = { x = -3319.01, y = -2825.16, z = -5.77, rotx = -4.29, roty = 0.00, rotz = 151.13, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_C"
+                    },
+                }
+            },
+            {
+                spawn    = vector4(-3319.260498046875, -2827.394775390625, -6.08130264282226, -66.57),
+                camera   = { x = -3318.73, y = -2825.75, z = -5.77, rotx = -1.26, roty = 0.00, rotz = 163.98, fov = 50.0 },
+                scenario = {
+                    mp_female = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    },
+                    mp_male = {
+                        "MP_COOP_LOBBY_STANDING_D"
+                    }
+                }
+            },
+        }
+    },
 }
 
 -- Keyboards
@@ -272,7 +949,9 @@ Config.commands = {
     Holster = { command = "holster" },
     Suspender = { command = "suspender" },
     armor = { command = "armor" },
+    Gunbelt = { command = "gunbelt" },
 }
+
 
 Config.DefaultChar = {
     Male = {
@@ -313,7 +992,7 @@ Config.DefaultChar = {
             imgColor = "brown",
             Heads = { "4C5C14D1", "2BADE2F9", "32E0BD65", "51EE52F8", "53361205", "7150F35A", "7320223C",
                 "8036DB0B", "8239BA1C", "4DAD06D9", "93C8CFE3", "B0B07238", "BC310F75", "B9C497C7",
-                "C00E8CF7", "C2978B19", "FEC87D01", "89601857", "364F2807", "FEB1F6D4" },
+                "C00E8CF7", "C2978B19", "FEC87D01", "89601857", "FEB1F6D4", "936FAFDE", },
             Body = { "34C3B131", "5C1686B", "8C9686C8", "BF787383" },
             Legs = { "F5E0272A", "B897BFA0", "C17616E", "73710076", "B897BFA0" },
             HeadTexture = { "MP_head_fr1_sc01_c0_000_ab" },
@@ -324,7 +1003,7 @@ Config.DefaultChar = {
             Heads = { "1EF1D4F5", "20BEAD17", "17E48A5C", "1D1391CB", "3E1D8D10", "41FB09E2", "421209B8",
                 "44C938AE", "465D3511", "48531C43", "5A5A4569", "69A6DC4D", "87198A9F", "8C099185",
                 "9AD0D9E0",
-                "9B593624", "A9918F1E", "AF4B1442", "E2BED257", "F769DA58", "936FAFDE", },
+                "9B593624", "A9918F1E", "AF4B1442", "E2BED257", "F769DA58", },
             Body = { "4824ED39", "3B6F503", "5EA984F8", "B4485D23", "6BB6BC48" },
             Legs = { "D3A7708B", "5B835093", "DDF48A5D", "35D1FB67" },
             HeadTexture = { "mp_head_mr1_sc04_c0_000_ab" },
@@ -340,6 +1019,7 @@ Config.DefaultChar = {
             Legs = { "52CC3F25", "6577142C", "6CBCE93C", "887C4C70", "EF9D2DAE" },
             HeadTexture = { "mp_head_fr1_sc05_c0_000_ab" },
         },
+
     },
     Female = {
         {
@@ -427,7 +1107,7 @@ Config.texture_types = {
     }
 }
 
--- you can choose the color you want people to use
+-- you can choose the color you want people to use by removing it from each category for example grime you dont want people to use pink
 Config.color_palettes = {
     eyebrows = {
         0x3F6E70FF, -- black
@@ -455,6 +1135,13 @@ Config.color_palettes = {
         0xF93DB0C8, -- redish
         0xFB71527B, -- gray dark
         0xA4041CEF, --orange
+
+    },
+    grime = {
+        0x3F6E70FF, -- black
+        0x4101ED87, -- brown medium
+        0xBBF43EF8, -- light brown
+        0xDFB1F64C, -- brown
 
     },
     beardstabble = {
@@ -620,6 +1307,60 @@ Config.color_palettes = {
         0xA4041CEF,
     },
     blush = {
+        0x3F6E70FF,
+        0x0105607B,
+        0x17CBCC83,
+        0x29F81B2A,
+        0x3385C5DB,
+        0x37CD36D4,
+        0x4101ED87,
+        0x63838A81,
+        0x6765BC15,
+        0x8BA18876,
+        0x9AC34F34,
+        0x9E4803A0,
+        0xA4CFABD0,
+        0xAA65D8A3,
+        0xB562025C,
+        0xB9E7F722,
+        0xBBF43EF8,
+        0xD1476963,
+        0xD799E1C2,
+        0xDC6BC93B,
+        0xDFB1F64C,
+        0xF509C745,
+        0xF93DB0C8,
+        0xFB71527B,
+        0xA4041CEF,
+    },
+    foundation = {
+        0x3F6E70FF,
+        0x0105607B,
+        0x17CBCC83,
+        0x29F81B2A,
+        0x3385C5DB,
+        0x37CD36D4,
+        0x4101ED87,
+        0x63838A81,
+        0x6765BC15,
+        0x8BA18876,
+        0x9AC34F34,
+        0x9E4803A0,
+        0xA4CFABD0,
+        0xAA65D8A3,
+        0xB562025C,
+        0xB9E7F722,
+        0xBBF43EF8,
+        0xD1476963,
+        0xD799E1C2,
+        0xDC6BC93B,
+        0xDFB1F64C,
+        0xF509C745,
+        0xF93DB0C8,
+        0xFB71527B,
+        0xA4041CEF,
+    },
+    paintedmasks = {
         0x3F6E70FF,
         0x0105607B,
         0x17CBCC83,
@@ -1167,10 +1908,28 @@ Config.overlays_info = {
     },
 }
 
+Config.EyeImgColor = {
+    "Brown 1",
+    "Brown 2",
+    "Blue 1",
+    "Blue 2",
+    "Blue 3",
+    "Blue 4",
+    "Blue 5",
+    "Green 1",
+    "Green 2",
+    "Green 3",
+    "Green 4",
+    "Green 5",
+    "Green 6",
+    "Green 7",
+}
+
 ---------------------------* EYES *--------------------------
 Config.Eyes = {
     Male = {
         612262189,
+        3065185688,
         1864171073,
         1552505114,
         46507404,
@@ -1183,7 +1942,6 @@ Config.Eyes = {
         3983864603,
         2739887825,
         2432743988,
-        3065185688,
     },
     Female = {
         928002221,
@@ -1301,67 +2059,97 @@ Config.Teeth = {
     }
 }
 
--- *TRANSLATE ["inside here"] beloow
+-- *TRANSLATE ["inside here"] below to your language*
 Config.FaceFeatures = {
     head = {
-        ["width"] = { -- TRANSLATE THIS
-            hash = 0x84D6,
-            comp = "HeadSize"
-        },
+        ["Head Width"] = { hash = 0x84D6, comp = "HeadSize" },
+        ["Face Width"] = { hash = 41396, comp = "FaceW" },
+        ["Face Depth"] = { hash = 12281, comp = "FaceD" },
+        ["Forehead Size"] = { hash = 13059, comp = "FaceS" },
+        ["Neck Width"] = { hash = 36277, comp = "NeckW" },
+        ["Neck Depth"] = { hash = 60890, comp = "NeckD" },
     },
+
     eyesandbrows = {
-        ["heightbrows"] = { hash = 0x3303, comp = "EyeBrowH" },
-        ["widthbrows"] = { hash = 0x2FF9, comp = "EyeBrowW" },
-        ["depthbrows"] = { hash = 0x4AD1, comp = "EyeBrowD" },
-        ["deptheyes"] = { hash = 0xEE44, comp = "EyeD" },
-        ["angleeyes"] = { hash = 0xD266, comp = "EyeAng" },
-        ["distanceeyes"] = { hash = 0xA54E, comp = "EyeDis" },
-        ["heighteyes"] = { hash = 0xDDFB, comp = "EyeH" },
-        ["heighteyelid"] = { hahs = 0x8B2B, comp = "EyeLidH" },
-        ["widtheyelid"] = { hash = 0x1B6B, comp = "EyeLidW" },
+        ["Brows Height"] = { hash = 0x3303, comp = "EyeBrowH" },
+        ["Brows Width"] = { hash = 0x2FF9, comp = "EyeBrowW" },
+        ["Brows Depth"] = { hash = 0x4AD1, comp = "EyeBrowD" },
+        ["Eyes Depth"] = { hash = 0xEE44, comp = "EyeD" },
+        ["Eyes Angle"] = { hash = 0xD266, comp = "EyeAng" },
+        ["Eyes Distance"] = { hash = 0xA54E, comp = "EyeDis" },
+        ["Eyes Height"] = { hash = 0xDDFB, comp = "EyeH" },
+        ["Eyelid Height"] = { hash = 0x8B2B, comp = "EyeLidH" },
+        ["Eyelid Width"] = { hash = 0x1B6B, comp = "EyeLidW" },
+        ["Eyelid Left O/Close"] = { hash = 52902, comp = "EyeLidL" },
+        ["Eyelid Right O/Close"] = { hash = 22421, comp = "EyeLidR" },
     },
     ears = {
-        ["width"] = { hash = 0xC04F, comp = "EarsW" },
-        ["angle"] = { hash = 0xB6CE, comp = "EarsL" },
-        ["height"] = { hash = 0x2844, comp = "EarsH" },
-        ["size"] = { hash = 0xED30, comp = "EarsD" },
+        ["Ears Width"] = { hash = 0xC04F, comp = "EarsW" },
+        ["Ears Angle"] = { hash = 0xB6CE, comp = "EarsA" },
+        ["Ears Height"] = { hash = 0x2844, comp = "EarsH" },
+        ["Ears Depth"] = { hash = 0xED30, comp = "EarsD" },
     },
     cheek = {
-        ["height"] = { hash = 0x6A0B, comp = "CheekBonesH" },
-        ["width"] = { hash = 0xABCF, comp = "CheekBonesW" },
-        ["depth"] = { hash = 0x358D, comp = "CheekBonesD" },
+        ["CheekBone Height"] = { hash = 0x6A0B, comp = "CheekBonesH" },
+        ["CheekBone Width"] = { hash = 0xABCF, comp = "CheekBonesW" },
+        ["CheekBone Depth"] = { hash = 0x358D, comp = "CheekBonesD" },
     },
     jaw = {
-        ["height"] = { hash = 0x8D0A, comp = "JawH" },
-        ["width"] = { hash = 0xEBAE, comp = "JawW" },
-        ["depth"] = { hash = 0x1DF6, comp = "JawD" },
+        ["Jaw Height"] = { hash = 0x8D0A, comp = "JawH" },
+        ["Jaw Width"] = { hash = 0xEBAE, comp = "JawW" },
+        ["Jaw Depth"] = { hash = 0x1DF6, comp = "JawD" },
     },
     chin = {
-        ["height"] = { hash = 0x3C0F, comp = "ChinH" },
-        ["width"] = { hash = 0xC3B2, comp = "ChinW" },
-        ["depth"] = { hash = 0xE323, comp = "ChinD" },
+        ["Chin Height"] = { hash = 0x3C0F, comp = "ChinH" },
+        ["Chin Width"] = { hash = 0xC3B2, comp = "ChinW" },
+        ["Chin Depth"] = { hash = 0xE323, comp = "ChinD" },
     },
     nose = {
-        ["width"] = { hash = 0x6E7F, comp = "NoseW" },
-        ["size"] = { hash = 0x3471, comp = "NoseS" },
-        ["height"] = { hash = 0x03F5, comp = "NoseH" },
-        ["angle"] = { hash = 0x34B1, comp = "NoseAng" },
-        ["curvature"] = { hash = 0xF156, comp = "NoseC" },
-        ["distance"] = { hash = 0x561E, comp = "NoseDis" },
+        ["Nose Width"] = { hash = 0x6E7F, comp = "NoseW" },
+        ["Nose Size"] = { hash = 0x3471, comp = "NoseS" },
+        ["Nose Height"] = { hash = 0x03F5, comp = "NoseH" },
+        ["Nose Angle"] = { hash = 0x34B1, comp = "NoseAng" },
+        ["Nose Curvature"] = { hash = 0xF156, comp = "NoseC" },
+        ["Nose Distance"] = { hash = 0x561E, comp = "NoseDis" },
     },
     mouthandlips = {
-        ["widthmouth"] = { hash = 0xF065, comp = "MouthW" },
-        ["depthMouth"] = { hash = 0xAA69, comp = "MouthD" },
-        ["MouthdistanceX"] = { hash = 0x7AC3, comp = "MouthX" },
-        ["MouthdistanceY"] = { hash = 0x410D, comp = "MouthY" },
-        ["heightupper"] = { hash = 0x1A00, comp = "ULiphH" },
-        ["widthupper"] = { hash = 0x91C1, comp = "ULiphW" },
-        ["depthupper"] = { hash = 0xC375, comp = "ULiphD" },
-        ["heightlower"] = { hash = 0xBB4D, comp = "LLiphH" },
-        ["widthlower"] = { hash = 0xB0B0, comp = "LLiphW" },
-        ["depthlower"] = { hash = 0x5D16, comp = "LLiphD" },
+        ["Mouth Width"] = { hash = 0xF065, comp = "MouthW" },
+        ["Mouth Depth"] = { hash = 0xAA69, comp = "MouthD" },
+        ["Mouth DistanceX"] = { hash = 0x7AC3, comp = "MouthX" },
+        ["Mouth DistanceY"] = { hash = 0x410D, comp = "MouthY" },
+        ["Lip Upper Height"] = { hash = 0x1A00, comp = "ULiphH" },
+        ["Lip Upper Width"] = { hash = 0x91C1, comp = "ULiphW" },
+        ["Lip Upper Depth"] = { hash = 0xC375, comp = "ULiphD" },
+        ["Lip Lower Height"] = { hash = 0xBB4D, comp = "LLiphH" },
+        ["Lip Lower Width"] = { hash = 0xB0B0, comp = "LLiphW" },
+        ["Lip Lower Depth"] = { hash = 0x5D16, comp = "LLiphD" },
+        ["Mouth Corner Left Withd"] = { hash = 57350, comp = "MouthCLW" },
+        ["Mouth Corner Right Withd"] = { hash = 60292, comp = "MouthCRW" },
+        ["Mouth Corner Left Depth"] = { hash = 40950, comp = "MouthCLD" },
+        ["Mouth Corner Right Depth"] = { hash = 49299, comp = "MouthCRD" },
+        ["Mouth Corner Left Height"] = { hash = 46661, comp = "MouthCLH" },
+        ["Mouth Corner Right Height"] = { hash = 55718, comp = "MouthCRH" },
+        ["Mouth Corner Left Lips Distance"] = { hash = 22344, comp = "MouthCLLD" },
+        ["Mouth Corner Right Lips Distance"] = { hash = 9423, comp = "MouthCRLD" },
     },
+    upperbody = {
+        ["Arms Size"] = { hash = 46032, comp = "ArmsS" },
+        ["Upper Shoulders Size"] = { hash = 50039, comp = "ShouldersS" },
+        ["Back Shoulders Thickness"] = { hash = 7010, comp = "ShouldersT" },
+        ["Back Muscles"] = { hash = 18046, comp = "ShouldersM" }, -- shoulder blades / back muscles
+        ["Chest Size"] = { hash = 27779, comp = "ChestS" },
+        ["Waist Width"] = { hash = 50460, comp = "WaistW" },
+        ["Hips Size"] = { hash = 49787, comp = "HipsS" }, -- hip width / stomach size
+    },
+
+    lowerbody = {
+        ["Tights Size"] = { hash = 64834, comp = "LegsS" },
+        ["Calves Size"] = { hash = 42067, comp = "CalvesS" },
+    },
+
 }
+
+
 
 Config.HashList = {
     Gunbelt     = 0x9B2C8B89,
@@ -1402,3 +2190,5 @@ Config.HashList = {
     Beard       = 0xF8016BCA,
     bow         = 0x8E84A2AA,
 }
+
+Config.clothesPalettes = { 1090645383, 1064202495, -783849117, 864404955, 1669565057, -1952348042 }

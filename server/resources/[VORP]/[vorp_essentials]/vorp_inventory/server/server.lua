@@ -1,10 +1,6 @@
 ---@diagnostic disable: undefined-global
 
-Core = {}
-TriggerEvent("getCore", function(core)
-    Core = core
-end)
-
+Core = exports.vorp_core:GetCore()
 T = TranslationInv.Langs[Lang]
 
 if Config.DevMode then
@@ -20,16 +16,23 @@ end)
 
 RegisterServerEvent("vorpinventory:check_slots")
 AddEventHandler("vorpinventory:check_slots", function()
-    local _source = tonumber(source)
-    local part2 = Config.MaxItemsInInventory.Items
-    local User = Core.getUser(_source).getUsedCharacter
+    local _source = source
+
+    local User = Core.getUser(_source)
+    if not User then
+        return
+    end
+
+    User = User.getUsedCharacter
+    local slots = User.invCapacity
     local identifier = User.identifier
     local charid = User.charIdentifier
     local money = User.money
     local gold = User.gold
+    local rol = User.rol
     local stufftosend = InventoryAPI.getUserTotalCountItems(identifier, charid)
 
-    TriggerClientEvent("syn:getnuistuff", _source, stufftosend, part2, money, gold)
+    TriggerClientEvent("syn:getnuistuff", _source, stufftosend, slots, money, gold, rol)
 end)
 
 
@@ -48,45 +51,25 @@ AddEventHandler("vorpinventory:getLabelFromId", function(id, item2, cb)
     end)
 end)
 
-RegisterServerEvent("vorpinventory:itemlog")
-AddEventHandler("vorpinventory:itemlog", function(_source, targetHandle, itemName, amount)
-    local name = GetPlayerName(_source)
-    local name2 = GetPlayerName(targetHandle)
-    local description = name .. T.transfered .. amount .. " " .. itemName .. T.to .. name2
-    Core.AddWebhook(_source, Config.webhook, description, color, Name, logo, footerlogo, avatar)
-end)
-
-RegisterServerEvent("vorpinventory:weaponlog")
-AddEventHandler("vorpinventory:weaponlog", function(targetHandle, data)
-    local _source = source
-    local name = GetPlayerName(_source)
-    local name2 = GetPlayerName(targetHandle)
-    local description = name .. T.transfered ..
-        data.item .. T.to .. name2 .. T.withid .. data.id
-    Core.AddWebhook(_source, Config.webhook, description, color, Name, logo, footerlogo, avatar) -- if undefined it will choose vorp default.
-end)
-
-RegisterServerEvent("vorpinventory:moneylog")
-AddEventHandler("vorpinventory:moneylog", function(targetHandle, amount)
-    local _source = source
-    local name = GetPlayerName(_source)
-    local name2 = GetPlayerName(targetHandle)
-    local description = name .. T.transfered .. " $" .. amount .. " " .. T.to .. name2
-    Core.AddWebhook(_source, Config.webhook, description, color, Name, logo, footerlogo, avatar)
-end)
-
 RegisterServerEvent("vorpinventory:netduplog")
 AddEventHandler("vorpinventory:netduplog", function()
     local _source = source
-    local name = GetPlayerName(_source)
-    local description = Config.NetDupWebHook.Language.descriptionstart ..
-        name .. Config.NetDupWebHook.Language.descriptionend
+    local playername = GetPlayerName(_source)
+    local description = Logs.NetDupWebHook.Language.descriptionstart ..
+        name .. Logs.NetDupWebHook.Language.descriptionend
 
-    if Config.NetDupWebHook.Active then
-        Core.AddWebhook(Config.NetDupWebHook.Language.title, Config.webhook, description, color, name, logo, footerlogo,
-            avatar)
+    if Logs.NetDupWebHook.Active then
+        Info = {
+            source = _source,
+            title = Config.NetDupWebHook.Language.title,
+            name = playername,
+            description = description,
+            webhook = Logs.NetDupWebHook.webhook,
+            color = Logs.NetDupWebHook.color
+        }
+        SvUtils.SendDiscordWebhook(Info)
     else
-        print('[' .. Config.NetDupWebHook.Language.title .. '] ', description)
+        print('[' .. Logs.NetDupWebHook.Language.title .. '] ', description)
     end
 end)
 
@@ -95,13 +78,14 @@ end)
 -- * CUSTOM INVENTORY CHECK IS OPEN * --
 local InventoryBeingUsed = {}
 
-Core.addRpcCallback("vorp_inventory:Server:CanOpenCustom", function(source, cb, id)
+Core.Callback.Register("vorp_inventory:Server:CanOpenCustom", function(source, cb, id)
     local _source = source
     if not InventoryBeingUsed[id] then
         InventoryBeingUsed[id] = _source
         return cb(true)
     end
 
+    Core.NotifyObjective(_source, "someone is using this stash, wait for your turn", 5000)
     return cb(false)
 end)
 
@@ -122,18 +106,19 @@ AddEventHandler('playerDropped', function()
     allplayersammo[_source] = nil
 
     -- if player is stil in inventory check and remove
-    for i, value in ipairs(InventoryBeingUsed) do
+    for i, value in pairs(InventoryBeingUsed) do
         if value == _source then
-            table.remove(InventoryBeingUsed, i)
+            InventoryBeingUsed[i] = nil
             break
         end
     end
 
     -- remove weapons from cache on player leave
     local weapons = UsersWeapons.default
-    local char = Core.getUser(_source).getUsedCharacter
+    local char = Core.getUser(_source)
+
     if char then
-        local charid = char.charIdentifier
+        local charid = char.getUsedCharacter.charIdentifier
         for key, value in pairs(weapons) do
             if value.charId == charid then
                 UsersWeapons.default[key] = nil

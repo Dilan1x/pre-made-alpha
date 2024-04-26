@@ -18,6 +18,9 @@
 ---@field public NotifyUpdate fun(title: string, message: string, duration?: number): nil
 ---@field public NotifyWarning fun(title: string, message: string, audioRef: string, audioName: string, duration?: number): nil
 ---@field public NotifyLeftRank fun(title: string, subtitle: string, dict: string, texture: string, duration?: number, color?: string): nil
+
+local T = Translation[Lang].MessageOfSystem
+
 VorpNotification = setmetatable({}, VorpNotification)
 VorpNotification.__index = VorpNotification
 VorpNotification.__call = function()
@@ -37,7 +40,6 @@ function VorpNotification:NotifyLeft(title, subtitle, dict, icon, duration, colo
 
   local structConfig = DataView.ArrayBuffer(8 * 7)
   structConfig:SetInt32(8 * 0, tonumber(duration or 3000))
-
   local structData = DataView.ArrayBuffer(8 * 8)
   structData:SetInt64(8 * 1, CoreAction.Utils.bigInt(CreateVarString(10, "LITERAL_STRING", title)))
   structData:SetInt64(8 * 2, CoreAction.Utils.bigInt(CreateVarString(10, "LITERAL_STRING", subtitle)))
@@ -301,7 +303,7 @@ end
 ---Test function to test all notifications
 ---@return nil
 function VorpNotification:Test()
-  local testText = "This is a test notification"
+  local testText = T.testText
   local testDuration = 3000
   local testWaitDuration = 4000
   local testDict = "generic_textures"

@@ -11,45 +11,62 @@ local T = TranslationBanking.Langs[Lang]
 RegisterServerEvent('vorp_bank:getinfo')
 AddEventHandler('vorp_bank:getinfo', function(name)
     local _source = source
-    local Character = VorpCore.getUser(_source).getUsedCharacter
-    local charidentifier = Character.charIdentifier
-    local identifier = Character.identifier
+    local user = VorpCore.getUser(_source)
+    local character = user.getUsedCharacter
+    local charidentifier = character.charIdentifier
+    local identifier = character.identifier
+    local allBanks = {}
 
     MySQL.query("SELECT * FROM bank_users WHERE charidentifier = @charidentifier AND name = @name",
-        { ["@charidentifier"] = charidentifier, ["@name"] = name }, function(result)
-            if result[1] then
-                local money = result[1].money
-                local gold = result[1].gold
-                local invspace1 = result[1].invspace
-                local bankinfo = { money = money, gold = gold, invspace = invspace1, name = name }
+        {["@charidentifier"] = charidentifier, ["@name"] = name }, function(result)
+        if result[1] then
 
-                TriggerClientEvent("vorp_bank:recinfo", _source, bankinfo)
-            else -- if account dont exist create new one
-                local Parameters = {
-                    ['name'] = name,
-                    ['identifier'] = identifier,
-                    ['charidentifier'] = charidentifier,
-                    ['money'] = 0,
-                    ['gold'] = 0,
-                    ['invspace'] = 10
-                }
-                MySQL.insert(
-                "INSERT INTO bank_users ( `name`,`identifier`,`charidentifier`,`money`,`gold`,`invspace`) VALUES ( @name, @identifier, @charidentifier, @money, @gold, @invspace)",
-                    Parameters)
-                Wait(200)
-                MySQL.query("SELECT * FROM bank_users WHERE charidentifier = @charidentifier AND name = @name",
-                    { ["@charidentifier"] = charidentifier, ["@name"] = name }, function(result1)
+            local money = result[1].money
+            local gold = result[1].gold
+            local invspace = result[1].invspace
+            local bankinfo = { money = money, gold = gold, invspace = invspace, name = name }
+
+            local allBanksResult = MySQL.query.await("SELECT * FROM bank_users WHERE charidentifier = @charidentifier", { ["@charidentifier"] = charidentifier })
+            if allBanksResult[1] then
+                allBanks = allBanksResult
+            end
+
+            TriggerClientEvent("vorp_bank:recinfo", _source, bankinfo, name, allBanks)
+        else
+
+            local defaultMoney = 0
+            local defaultGold = 0
+            local defaultInvspace = 10
+            local parameters = {
+                ['name'] = name,
+                ['identifier'] = identifier,
+                ['charidentifier'] = charidentifier,
+                ['money'] = defaultMoney,
+                ['gold'] = defaultGold,
+                ['invspace'] = defaultInvspace
+            }
+
+            MySQL.insert("INSERT INTO bank_users ( `name`,`identifier`,`charidentifier`,`money`,`gold`,`invspace`) VALUES ( @name, @identifier, @charidentifier, @money, @gold, @invspace)", parameters)
+            Wait(200)
+
+            MySQL.query("SELECT * FROM bank_users WHERE charidentifier = @charidentifier AND name = @name",
+                { ["@charidentifier"] = charidentifier, ["@name"] = name }, function(result1)
                     if result1[1] then
-                        local money = 0
-                        local gold = 0
-                        local invspace1 = 10
-                        local bankinfo = { money = money, gold = gold, invspace = invspace1, name = name }
+                        local money = defaultMoney
+                        local gold = defaultGold
+                        local invspace = defaultInvspace
+                        local bankinfo = { money = money, gold = gold, invspace = invspace, name = name }
 
-                        TriggerClientEvent("vorp_bank:recinfo", _source, bankinfo)
+                        local allBanksResult = MySQL.query.await("SELECT * FROM bank_users WHERE charidentifier = @charidentifier", { ["@charidentifier"] = charidentifier })
+                        if allBanksResult[1] then
+                            allBanks = allBanksResult
+                        end
+
+                        TriggerClientEvent("vorp_bank:recinfo", _source, bankinfo, name, allBanks)
                     end
                 end)
-            end
-        end)
+        end
+    end)
 end)
 
 RegisterServerEvent('vorp_bank:UpgradeSafeBox')
@@ -83,7 +100,7 @@ AddEventHandler('vorp_bank:UpgradeSafeBox', function(costlot, maxslots, slotsBou
 end)
 
 
-DiscordLogs = function(amount, bankname, playername, type)
+DiscordLogs = function(amount, bankname, playername, type, tobankname)
     local title = "Bank Logs"
     local color = nil
     local logo = nil
@@ -94,17 +111,74 @@ DiscordLogs = function(amount, bankname, playername, type)
     if type == "with" then
         local webhook = Config.Logwithdraw
         local description = "**Player:**`" ..
-            playername .. "`\n **withdrew:** `" .. amount .. "` \n**Bank** `" .. bankname .. "`"
+            playername .. "`\n **withdrew:** `" .. amount .. "$` \n**Bank** `" .. bankname .. "`"
         VorpCore.AddWebhook(title, webhook, description, color, names, logo, footerlogo, avatar)
     end
 
     if type == "depo" then
         local webhook = Config.LogDeposti
         local description = "**Player:**`" ..
-            playername .. "`\n **Deposited: ** `" .. amount .. "`\n **Bank** `" .. bankname .. "`"
+            playername .. "`\n **Deposited: ** `" .. amount .. "$`\n **Bank** `" .. bankname .. "`"
+            VorpCore.AddWebhook(title, webhook, description, color, names, logo, footerlogo, avatar)
+    end
+
+    if type == "transfer" then
+        local webhook = Config.Logtransfer
+        local description = "**Player:**`" ..
+            playername .. "`\n **Transfered: ** `" .. amount .. "$`\n **from Bank** `" .. bankname .. "`" .. "\n **to Bank** `" .. tobankname .. "`"
         VorpCore.AddWebhook(title, webhook, description, color, names, logo, footerlogo, avatar)
     end
 end
+
+RegisterServerEvent('vorp_bank:transfer')
+AddEventHandler('vorp_bank:transfer', function(amount, from, to)
+    local _source = source
+    local Character = VorpCore.getUser(_source).getUsedCharacter
+    local playername = Character.firstname .. ' ' .. Character.lastname
+    local charidentifier = Character.charIdentifier
+    local money = Character.money
+
+    local result = MySQL.query.await("SELECT * FROM bank_users WHERE charidentifier = @charidentifier;", { ["@charidentifier"] = charidentifier })
+    
+    local banks = {}
+    local _allbanks = {}
+    if result then
+        _allbanks = result
+        for _, bank in pairs(result) do
+            banks[bank.name] = bank
+        end
+
+        if banks[from].money > amount then
+            local newmoneyfrom = banks[from].money - amount
+            local newmoneyto = banks[to].money + (amount * 0.9)
+
+            local result1 = MySQL.query.await("UPDATE bank_users SET money = @newmoney WHERE charidentifier = @charidentifier AND name = @from;",
+                { ["@newmoney"] = newmoneyfrom, ["@charidentifier"] = charidentifier, ["@from"] = from })
+
+            if result1 then
+                local result2 = MySQL.query.await("UPDATE bank_users SET money = @newmoney WHERE charidentifier = @charidentifier AND name = @to;",
+                    { ["@newmoney"] = newmoneyto, ["@charidentifier"] = charidentifier, ["@to"] = to })
+
+                if result2 then
+                    local transferedmoney = amount * Config.feeamount
+                    transferedmoney = string.format("%.2f", transferedmoney)
+                    banks[to].money = string.format("%.2f", newmoneyto)
+                    banks[from].money = string.format("%.2f", newmoneyfrom)
+                    DiscordLogs(transferedmoney, from, playername, "transfer", to)
+                    local msg = string.format(T.transfer .. "%s $" .. T.to .. "%s" .. T.transferred, transferedmoney, to)
+                    TriggerClientEvent("vorp:TipRight", _source, msg, 5000)
+                    TriggerClientEvent("vorp_bank:recinfo", _source, banks[to], to, _allbanks)
+                else
+                    print("Second update failed.")
+                end
+            else
+                print("First update failed.")
+            end
+        else
+            TriggerClientEvent("vorp:TipRight", _source, T.noaccmoney, 5000)
+        end
+    end
+end)
 
 RegisterServerEvent('vorp_bank:depositcash')
 AddEventHandler('vorp_bank:depositcash', function(amount, name, bankinfo)
@@ -125,7 +199,7 @@ AddEventHandler('vorp_bank:depositcash', function(amount, name, bankinfo)
                     Wait(100)
                     local Parameters = { ['charidentifier'] = charidentifier, ['money'] = finalamount, ['name'] = name }
                     MySQL.update(
-                    "UPDATE bank_users Set money=@money WHERE charidentifier=@charidentifier AND name = @name",
+                        "UPDATE bank_users Set money=@money WHERE charidentifier=@charidentifier AND name = @name",
                         Parameters)
                     TriggerClientEvent("vorp:TipRight", _source, T.youdepo .. amount, 10000)
                 end
@@ -151,8 +225,9 @@ AddEventHandler('vorp_bank:depositgold', function(amount, name, bankinfo)
     else
         TriggerClientEvent("vorp:TipRight", _source, T.invalid, 10000)
     end
-    TriggerClientEvent("vorp_bank:ready", _source)
 end)
+
+local lastMoney = {}
 
 RegisterServerEvent('vorp_bank:withcash')
 AddEventHandler('vorp_bank:withcash', function(amount, name, bankinfo)
@@ -160,24 +235,35 @@ AddEventHandler('vorp_bank:withcash', function(amount, name, bankinfo)
     local Character = VorpCore.getUser(_source).getUsedCharacter
     local playername = Character.firstname .. ' ' .. Character.lastname
     local charidentifier = Character.charIdentifier
+
     MySQL.query("SELECT * FROM bank_users WHERE charidentifier = @charidentifier AND name = @name",
         { ["@charidentifier"] = charidentifier, ["@name"] = name }, function(result)
             if result[1] then
                 local money = result[1].money
                 if money >= amount then
-                    local finalamount = money - amount
-                    local Parameters = { ['charidentifier'] = charidentifier, ['money'] = finalamount, ['name'] = name }
-                    MySQL.update(
-                        "UPDATE bank_users Set money=@money WHERE charidentifier=@charidentifier AND name = @name",
-                        Parameters)
-                    Character.addCurrency(0, amount)
-                    DiscordLogs(amount, name, playername, "with")
-                    TriggerClientEvent("vorp:TipRight", _source, T.withdrew .. amount, 10000)
+                    if not lastMoney[_source] or lastMoney[_source] ~= money then
+                        local finalamount = money - amount
+                        local Parameters = {
+                            ['charidentifier'] = charidentifier,
+                            ['money'] = finalamount,
+                            ['name'] = name
+                        }
+                        MySQL.update(
+                            "UPDATE bank_users Set money=@money WHERE charidentifier=@charidentifier AND name = @name",
+                            Parameters)
+                        lastMoney[_source] = money
+                        Character.addCurrency(0, amount)
+                        DiscordLogs(amount, name, playername, "with")
+                        TriggerClientEvent("vorp:TipRight", _source, T.withdrew .. amount, 10000)
+                    else
+                        print("^1cheater found ban this player^7")
+                    end
+                    TriggerClientEvent("vorp_bank:ready", _source)
                 else
+                    TriggerClientEvent("vorp_bank:ready", _source)
                     TriggerClientEvent("vorp:TipRight", _source, T.invalid, 10000)
                 end
             end
-            TriggerClientEvent("vorp_bank:ready", _source)
         end)
 end)
 
@@ -193,7 +279,8 @@ AddEventHandler('vorp_bank:withgold', function(amount, name, bankinfo)
             if gold >= amount then
                 local Parameters = { ['charidentifier'] = charidentifier, ['gold'] = amount, ['name'] = name }
                 MySQL.update(
-                "UPDATE bank_users Set gold=gold-@gold WHERE charidentifier=@charidentifier AND name = @name", Parameters)
+                    "UPDATE bank_users Set gold=gold-@gold WHERE charidentifier=@charidentifier AND name = @name",
+                    Parameters)
                 Character.addCurrency(1, amount)
                 TriggerClientEvent("vorp:TipRight", _source, T.withdrewg .. amount, 10000)
             else
@@ -338,14 +425,13 @@ AddEventHandler("vorp_bank:TakeFromBank", function(jsonData)
         if itemType == "item_weapon" then
             TriggerEvent("vorpCore:canCarryWeapons", tonumber(_source), itemCount, function(canCarry)
                 if canCarry then
-                    MySQL.query(
-                        "SELECT * FROM bank_users WHERE charidentifier = @charidentifier AND name = @name",
+                    MySQL.query("SELECT * FROM bank_users WHERE charidentifier = @charidentifier AND name = @name",
                         { ["@charidentifier"] = charidentifier, ["@name"] = name }, function(result)
                             notpass = true
                             if result[1].items then
                                 local items = {}
                                 local inv = json.decode(result[1].items)
-                                local foundItem, foundIndex = nil, nil
+                                local foundItem = nil
                                 for k, v in pairs(inv) do
                                     if v.name == item.name then
                                         foundItem = v
@@ -365,7 +451,7 @@ AddEventHandler("vorp_bank:TakeFromBank", function(jsonData)
                                     items.itemList = inv
                                     items.action = "setSecondInventoryItems"
                                     local weapId = foundItem.id
-                                    VorpInv.giveWeapon(_source, weapId, 0)
+                                    VorpInv.giveWeapon(_source, weapId)
                                     Wait(200)
                                     TriggerClientEvent("vorp_inventory:ReloadBankInventory", _source, json.encode(items))
                                     MySQL.update(
@@ -537,10 +623,6 @@ AddEventHandler("vorp_bank:MoveToBank", function(jsonData)
         local itemCount = ToInteger(data["number"])
         local itemType = data["type"]
         local itemDBCount = 1
-        -- until its resolved
-        if itemType == "weapon" then
-            return TriggerClientEvent("vorp:TipRight", _source, "cant store weapons", 5000)
-        end
         local itemMeta = data.item.metadata
         local dataMeta = true
         if itemMeta == nil then
@@ -672,7 +754,10 @@ AddEventHandler("vorp_bank:MoveToBank", function(jsonData)
                                                             label = item.label,
                                                             type = item.type,
                                                             limit = item.limit,
-                                                            id = item.id
+                                                            id = item.id,
+                                                            serial_number = item.serial_number,
+                                                            custom_desc = item.custom_desc,
+                                                            custom_label = item.custom_label
                                                         }
                                                         table.insert(inv, foundItem)
                                                     end
@@ -683,8 +768,7 @@ AddEventHandler("vorp_bank:MoveToBank", function(jsonData)
                                                     if dataMeta then
                                                         VorpInv.subItem(_source, item.name, itemCount, itemMeta)
                                                         TriggerClientEvent("vorp:TipRight", _source,
-                                                            T.depoitem3 ..
-                                                            itemCount .. T.of .. item.label, 5000)
+                                                            T.depoitem3 .. itemCount .. T.of .. item.label, 5000)
                                                     else
                                                         VorpInv.subItem(_source, item.name, itemCount)
                                                         TriggerClientEvent("vorp:TipRight", _source,
@@ -701,8 +785,7 @@ AddEventHandler("vorp_bank:MoveToBank", function(jsonData)
                                                 TriggerClientEvent("vorp_inventory:ReloadBankInventory", _source,
                                                     json.encode(items))
                                                 MySQL.update(
-                                                    "UPDATE bank_users SET items = @inv WHERE charidentifier = @charidentifier AND name = @name"
-                                                    ,
+                                                    "UPDATE bank_users SET items = @inv WHERE charidentifier = @charidentifier AND name = @name",
                                                     {
                                                         ["@inv"] = json.encode(inv),
                                                         ["@charidentifier"] = charidentifier,
@@ -718,8 +801,7 @@ AddEventHandler("vorp_bank:MoveToBank", function(jsonData)
                                 trem(_source)
                             end
                         end)
-                elseif (bankConfig.useitemlimit and not bankConfig.usespecificitem) or
-                    (not bankConfig.useitemlimit and not bankConfig.usespecificitem) then
+                elseif (bankConfig.useitemlimit and not bankConfig.usespecificitem) or (not bankConfig.useitemlimit and not bankConfig.usespecificitem) then
                     if itemType ~= "item_weapon" then
                         local countin = VorpInv.getItemCount(_source, item.name)
                         if itemCount > countin then
@@ -727,10 +809,12 @@ AddEventHandler("vorp_bank:MoveToBank", function(jsonData)
                             return trem(_source)
                         end
                     end
+
                     if itemType == "item_weapon" then
                         itemCount = 1
                         item.count = 1
                     end
+
                     if itemCount and itemCount ~= 0 then
                         if item.count < itemCount then
                             TriggerClientEvent("vorp:TipRight", _source, T.invalid, 5000)
@@ -740,76 +824,66 @@ AddEventHandler("vorp_bank:MoveToBank", function(jsonData)
                         TriggerClientEvent("vorp:TipRight", _source, T.invalid, 5000)
                         return trem(_source)
                     end
-                    MySQL.query(
-                        "SELECT * FROM bank_users WHERE charidentifier = @charidentifier AND name = @name"
-                        , { ["@charidentifier"] = charidentifier, ["@name"] = bankName }, function(result)
-                            notpass = true
-                            if result[1].items then
-                                local space = result[1].invspace
-                                local items = {}
-                                local countDB = 0
-                                local inv = json.decode(result[1].items)
-                                local foundItem = nil
 
-                                if next(itemMeta) ~= nil then
-                                    for k, v in pairs(inv) do
-                                        if v.name == item.name then
-                                            for x, y in pairsByKeys(v.metadata) do
-                                                for w, z in pairsByKeys(itemMeta) do
-                                                    if x == w and y == z then
-                                                        if itemType == "item_standard" then
-                                                            foundItem = v
-                                                        end
+                    MySQL.query("SELECT * FROM bank_users WHERE charidentifier = @charidentifier AND name = @name"
+                    , { ["@charidentifier"] = charidentifier, ["@name"] = bankName }, function(result)
+                        notpass = true
+                        if result[1].items then
+                            local space = result[1].invspace
+                            local items = {}
+                            local countDB = 0
+                            local inv = json.decode(result[1].items)
+                            local foundItem = nil
+
+                            if next(itemMeta) ~= nil then
+                                for k, v in pairs(inv) do
+                                    if v.name == item.name then
+                                        for x, y in pairsByKeys(v.metadata) do
+                                            for w, z in pairsByKeys(itemMeta) do
+                                                if x == w and y == z then
+                                                    if itemType == "item_standard" then
+                                                        foundItem = v
                                                     end
                                                 end
                                             end
                                         end
                                     end
-                                else
-                                    for k, v in pairs(inv) do
-                                        if v.name == item.name then
-                                            if v.metadata == nil or next(v.metadata) == nil then
-                                                if itemType == "item_standard" then
-                                                    foundItem = v
-                                                end
+                                end
+                            else
+                                for k, v in pairs(inv) do
+                                    if v.name == item.name then
+                                        if v.metadata == nil or next(v.metadata) == nil then
+                                            if itemType == "item_standard" then
+                                                foundItem = v
                                             end
                                         end
                                     end
                                 end
+                            end
 
-                                for k, v in pairs(inv) do
-                                    countDB = countDB + v.count
-                                end
-                                countDB = countDB + itemCount
-                                if countDB > space then
-                                    TriggerClientEvent("vorp:TipRight", _source, T.limit, 5000)
+                            for k, v in pairs(inv) do
+                                countDB = countDB + v.count
+                            end
+
+                            countDB = countDB + itemCount
+                            if countDB > space then
+                                TriggerClientEvent("vorp:TipRight", _source, T.limit, 5000)
+                            else
+                                if foundItem then
+                                    foundItem.count = foundItem.count + itemCount
                                 else
-                                    if foundItem then
-                                        foundItem.count = foundItem.count + itemCount
-                                    else
-                                        if itemType == "item_standard" then
-                                            if next(itemMeta) == nil then
-                                                foundItem = {
-                                                    name = item.name,
-                                                    count = itemCount,
-                                                    label = item.label,
-                                                    type = item.type,
-                                                    limit = item.limit,
-                                                    metadata = {}
-                                                }
-                                                inv[#inv + 1] = foundItem
-                                            else
-                                                foundItem = {
-                                                    name = item.name,
-                                                    count = itemCount,
-                                                    label = item.label,
-                                                    type = item.type,
-                                                    limit = item.limit,
-                                                    id = item.id,
-                                                    metadata = itemMeta
-                                                }
-                                                inv[#inv + 1] = foundItem
-                                            end
+                                    if itemType == "item_standard" then
+                                        if next(itemMeta) == nil then
+                                            foundItem = {
+                                                name = item.name,
+                                                count = itemCount,
+                                                label = item.label,
+                                                type = item.type,
+                                                limit = item.limit,
+                                                id = item.id,
+                                                metadata = {}
+                                            }
+                                            inv[#inv + 1] = foundItem
                                         else
                                             foundItem = {
                                                 name = item.name,
@@ -817,39 +891,54 @@ AddEventHandler("vorp_bank:MoveToBank", function(jsonData)
                                                 label = item.label,
                                                 type = item.type,
                                                 limit = item.limit,
-                                                id = item.id
+                                                id = item.id,
+                                                metadata = itemMeta
                                             }
-                                            table.insert(inv, foundItem)
+                                            inv[#inv + 1] = foundItem
                                         end
+                                    else
+                                        foundItem = {
+                                            name = item.name,
+                                            count = itemCount,
+                                            label = item.label,
+                                            type = item.type,
+                                            limit = item.limit,
+                                            id = item.id,
+                                            serial_number = item.serial_number,
+                                            custom_desc = item.custom_desc,
+                                            custom_label = item.custom_label
+                                        }
+                                        table.insert(inv, foundItem)
                                     end
-                                    items.itemList = inv
-                                    items.action = "setSecondInventoryItems"
-                                    if itemType == "item_standard" then
-                                        if dataMeta then
-                                            VorpInv.subItem(_source, item.name, itemCount, itemMeta)
-                                        else
-                                            VorpInv.subItem(_source, item.name, itemCount)
-                                        end
-                                        TriggerClientEvent("vorp:TipRight", _source,
-                                            T.depoitem3 .. itemCount .. T.of .. item.label, 5000)
-                                    end
-                                    if itemType == "item_weapon" then
-                                        local weapId = item.id
-                                        VorpInv.subWeapon(_source, weapId)
-                                        TriggerClientEvent("vorp:TipRight", _source, T.depoitem3 .. item.label, 5000)
-                                    end
-                                    TriggerClientEvent("vorp_inventory:ReloadBankInventory", _source, json.encode(items))
-                                    MySQL.update(
-                                        "UPDATE bank_users SET items = @inv WHERE charidentifier = @charidentifier AND name = @name",
-                                        {
-                                            ["@inv"] = json.encode(inv),
-                                            ["@charidentifier"] = charidentifier,
-                                            ["@name"] = bankName
-                                        })
                                 end
+                                items.itemList = inv
+                                items.action = "setSecondInventoryItems"
+                                if itemType == "item_standard" then
+                                    if dataMeta then
+                                        VorpInv.subItem(_source, item.name, itemCount, itemMeta)
+                                    else
+                                        VorpInv.subItem(_source, item.name, itemCount)
+                                    end
+                                    TriggerClientEvent("vorp:TipRight", _source,
+                                        T.depoitem3 .. itemCount .. T.of .. item.label, 5000)
+                                end
+                                if itemType == "item_weapon" then
+                                    local weapId = item.id
+                                    VorpInv.subWeapon(_source, weapId)
+                                    TriggerClientEvent("vorp:TipRight", _source, T.depoitem3 .. item.label, 5000)
+                                end
+                                TriggerClientEvent("vorp_inventory:ReloadBankInventory", _source, json.encode(items))
+                                MySQL.update(
+                                    "UPDATE bank_users SET items = @inv WHERE charidentifier = @charidentifier AND name = @name",
+                                    {
+                                        ["@inv"] = json.encode(inv),
+                                        ["@charidentifier"] = charidentifier,
+                                        ["@name"] = bankName
+                                    })
                             end
-                            notpass = false
-                        end)
+                        end
+                        notpass = false
+                    end)
                     while notpass do
                         Wait(500)
                     end
@@ -859,6 +948,17 @@ AddEventHandler("vorp_bank:MoveToBank", function(jsonData)
                     trem(_source)
                 end
             end
+        end
+    end
+end)
+
+--playerdrop
+AddEventHandler("onPlayerDropped", function()
+    local _source = source
+    for key, value in pairs(lastMoney) do
+        if key == _source then
+            lastMoney[key] = nil
+            break
         end
     end
 end)

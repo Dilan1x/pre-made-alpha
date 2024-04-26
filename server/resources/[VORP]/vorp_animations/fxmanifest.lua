@@ -4,21 +4,23 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 game 'rdr3'
 lua54 'yes'
 author 'VORP @Bytesizd'
-
-client_scripts {
-    'client/client.lua',
-}
+description 'A tool to define animations and use them in your scripts with an export'
+repository 'https://github.com/VORPCORE/vorp_animations'
 
 shared_scripts {
     'config.lua'
+}
+
+client_scripts { 
+    'client/client.lua',
 }
 
 files {
     'ui/*',
     'ui/assets/*',
     'ui/assets/fonts/*'
-}
-
+} 
+    
 ui_page 'ui/index.html'
 
 export "initiate"

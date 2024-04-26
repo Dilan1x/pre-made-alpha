@@ -21,7 +21,7 @@ local T = Translation[Lang].Commands
         userCheck = true, -- does this command need to check if user is playing ?
         groupAllowed = { "admin" }, -- from users table in the database this group will be allowed to use this command
         aceAllowed = 'vorpcore.setGroup.Command', -- dont touch,
-        --jobsAllow = {}, -- jobs allowed ? remove or leave empty if not needed
+        jobsAllow = {}, -- jobs allowed ? remove or leave empty if not needed
         callFunction = function(...) -- dont touch
             -- this is a function
             -- you can run code here trigger client events or server events , exports etc,
@@ -64,6 +64,7 @@ Commands = {
             { name = T.addJob.name,  help = T.addJob.help },
             { name = T.addJob.name1, help = T.addJob.help1 },
             { name = T.addJob.name2, help = T.addJob.help2 },
+            { name = T.addJob.name3, help = T.addJob.help3 },
         },
         userCheck = true,
         groupAllowed = { "admin" },
@@ -101,9 +102,6 @@ Commands = {
         suggestion = {
             { name = T.addWeapon.name,  help = T.addWeapon.help },
             { name = T.addWeapon.name1, help = T.addWeapon.help1 },
-            { name = T.addWeapon.name2, help = T.addWeapon.help2 },
-            { name = T.addWeapon.name3, help = T.addWeapon.help3 },
-            { name = T.addWeapon.name4, help = T.addWeapon.help4 },
         },
         userCheck = true,
         groupAllowed = { "admin" },
@@ -224,12 +222,11 @@ Commands = {
         userCheck = true,
         groupAllowed = { "admin" },
         aceAllowed = 'vorpcore.healplayer.Command',
-        callFunction = function(...)
-            local data = ...
+        callFunction = function(data)
             -- in here you can add your metabolism events
             TriggerClientEvent("vorpmetabolism:changeValue", tonumber(data.args[1]), "Thirst", 1000)
             TriggerClientEvent("vorpmetabolism:changeValue", tonumber(data.args[1]), "Hunger", 1000)
-            HealPlayers(...)
+            HealPlayers(data)
         end
     },
     addWhitelist = {
@@ -356,30 +353,14 @@ Commands = {
         commandName = "addChar",
         label = T.charCreateAdd.label,
         suggestion = {
-            { name = T.charCreateAdd.name, help = T.charCreateAdd.help },
+            { name = T.charCreateAdd.name,  help = T.charCreateAdd.help },
+            { name = T.charCreateAdd.name1, help = T.charCreateAdd.help1 },
         },
-        userCheck = false,
+        userCheck = true,
         groupAllowed = { "admin" },
         aceAllowed = 'vorpcore.addchar.Command',
         callFunction = function(...)
             AddCharCanCreateMore(...)
-        end
-    },
-    charCreateRemove = {
-        webhook = "",
-        custom = T.charCreateRemove.custom,
-        title = T.charCreateRemove.title,
-        --end webhook
-        commandName = "removeChar",
-        label = T.charCreateRemove.label,
-        suggestion = {
-            { name = T.charCreateRemove.name, help = T.charCreateRemove.help },
-        },
-        userCheck = false,
-        groupAllowed = { "admin" },
-        aceAllowed = 'vorpcore.removechar.Command',
-        callFunction = function(...)
-            RemoveCharCanCreateMore(...)
         end
     },
     myJob = {
@@ -406,6 +387,8 @@ Commands = {
             MyHours(...)
         end
     },
+
     -- create your commands here just copy from above , see first line on how to do it
+
 
 }

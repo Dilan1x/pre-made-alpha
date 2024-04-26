@@ -68,13 +68,22 @@ end
 
 function InventoryService.receiveWeapon(id, propietary, name, ammos, label, serial_number, custom_label, source, custom_desc)
 	local weaponAmmo = {}
+	local desc = ""
 
 	for type, amount in pairs(ammos) do
 		weaponAmmo[type] = tonumber(amount)
 	end
 
 	if custom_desc then
-		custom_desc = custom_desc .. "<br><br>" .. T.serialnumber .. serial_number
+		local serial_number_str = "<br><br>" .. T.serialnumber .. serial_number
+		if not string.find(custom_desc, serial_number_str, 1, true) and serial_number ~= "" then
+			custom_desc = custom_desc .. serial_number_str
+		end
+	end
+	if serial_number ~= "" then
+		desc = custom_desc or Utils.GetWeaponDesc(name) .. "<br><br>" .. T.serialnumber .. serial_number
+	else
+		desc = custom_desc or Utils.GetWeaponDesc(name)
 	end
 
 	if UserWeapons[id] == nil then
@@ -86,7 +95,7 @@ function InventoryService.receiveWeapon(id, propietary, name, ammos, label, seri
 			ammo = weaponAmmo,
 			used = false,
 			used2 = false,
-			desc = custom_desc or Utils.GetWeaponDesc(name) .. "<br><br>" .. T.serialnumber .. serial_number,
+			desc = desc,
 			group = 5,
 			source = source,
 			serial_number = serial_number,

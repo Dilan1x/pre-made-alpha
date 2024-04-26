@@ -1,7 +1,4 @@
-CREATE TABLE IF NOT EXISTS `banks` (
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE IF NOT EXISTS `bank_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -13,6 +10,5 @@ CREATE TABLE IF NOT EXISTS `bank_users` (
   `items` longtext DEFAULT '[]',
   `invspace` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `name` (`name`),
-  CONSTRAINT `bank` FOREIGN KEY (`name`) REFERENCES `banks` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

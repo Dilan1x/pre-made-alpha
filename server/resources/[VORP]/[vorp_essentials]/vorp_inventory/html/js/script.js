@@ -15,6 +15,8 @@ $("document").ready(function () {
                 $('#disabler').hide();
             } else {
                 closeInventory();
+                document.querySelectorAll('.dropdownButton[data-type="itemtype"], .dropdownButton1[data-type="itemtype"]').forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`.dropdownButton[data-param="all"][data-type="itemtype"], .dropdownButton1[data-param="all"][data-type="itemtype"]`)?.classList.add('active');
             }
         }
     });
@@ -57,6 +59,7 @@ window.addEventListener('message', function (event) {
         Config.AddDollarItem = LuaConfig.AddDollarItem;
         Config.AddAmmoItem = LuaConfig.AddAmmoItem;
         Config.DoubleClickToUse = LuaConfig.DoubleClickToUse;
+        Config.UseRolItem = LuaConfig.UseRolItem;
 
         if (!Config.UseGoldItem) {
             $("#inventoryHud").addClass("NoGoldBackground")
@@ -77,17 +80,22 @@ window.addEventListener('message', function (event) {
 
         if (event.data.money || event.data.money === 0) {
             $("#money-value").text(event.data.money.toFixed(2) + " ");
-
         }
+
         if (Config.UseGoldItem) {
             if (event.data.gold || event.data.gold === 0) {
                 $("#gold-value").text(event.data.gold.toFixed(2) + " ");
-
             }
         }
+        if (Config.UseRolItem) {
+            if (event.data.rol || event.data.rol === 0) {
+                $("#rol-value").text(event.data.rol.toFixed(2) + " ");
+            }
+        }
+
+
         if (event.data.id) {
             $("#id-value").text("ID " + event.data.id);
-
         }
 
     } else if (event.data.action == "transaction") {
@@ -133,50 +141,56 @@ window.addEventListener('message', function (event) {
 
         type = event.data.type
 
+        if (event.data.type == "player") {
+            playerId = event.data.id;
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
+        }
+
         if (event.data.type == "custom") {
             customId = event.data.id;
-            initiateSecondaryInventory(id, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
 
         if (event.data.type == "horse") {
             horseid = event.data.horseid;
-            initiateSecondaryInventory(horseid, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
 
         if (event.data.type == "cart") {
             wagonid = event.data.wagonid;
-            initiateSecondaryInventory(wagonid, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
 
         if (event.data.type == "house") {
             houseId = event.data.houseId;
-            initiateSecondaryInventory(houseId, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
         if (event.data.type == "hideout") {
             hideoutId = event.data.hideoutId;
-            initiateSecondaryInventory(hideoutId, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
         if (event.data.type == "bank") {
             bankId = event.data.bankId;
-            initiateSecondaryInventory(bankId, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
         if (event.data.type == "clan") {
             clanid = event.data.clanid;
-            initiateSecondaryInventory(clanid, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
         if (event.data.type == "store") {
             StoreId = event.data.StoreId;
             geninfo = event.data.geninfo;
-            initiateSecondaryInventory(StoreId, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
         if (event.data.type == "steal") {
             stealid = event.data.stealId;
-            initiateSecondaryInventory(stealid, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
         if (event.data.type == "Container") {
             Containerid = event.data.Containerid;
-            initiateSecondaryInventory(Containerid, event.data.title, event.data.capacity)
+            initiateSecondaryInventory(event.data.title, event.data.capacity)
         }
+
 
         disabled = false;
 
@@ -242,7 +256,7 @@ window.addEventListener('message', function (event) {
         }
 
     } else if (event.data.action == "setSecondInventoryItems") {
-        secondInventorySetup(event.data.itemList);
+        secondInventorySetup(event.data.itemList, event.data.info);
         if (secondaryCapacityAvailable == true) {
             // Get how many items are in inventory
             let l = event.data.itemList.length
@@ -261,6 +275,10 @@ window.addEventListener('message', function (event) {
             selectPlayerToGive(event.data);
         }
     }
+});
+
+window.addEventListener("offline", function () {
+    closeInventory()
 });
 
 //for gold cash and ID

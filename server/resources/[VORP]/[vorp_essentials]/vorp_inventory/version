@@ -1,3 +1,31 @@
+<3.5>
+- exploit fixed when using devtools to insert items no custom inventories
+- added ItemOnUse event hook ( useful when you dont have acces to a script)
+- added statebag for getting current serial number of a weapon
+- other minor improvements and optimisation
+- added feature to drag and press shift to move all items to custom inventories or main
+<3.4>
+- small fixes were added to this version
+- item hook to use in your scripts
+- added rol to show in inventory
+- drop item without input if qty is 1
+- event to lock unlock player inventory
+- lock inventory if player is cuffed or hogtied
+- fix showing translation to weapons that dont have serial numbers in second inventories
+- detection of player is offline will close inventory.
+- make sure to update all files.
+<3.3>
+ - fixed items with metadata being removed and then addd back on relog
+ - added some error handling for some functions
+ - added new export to get core object
+ - added new callbacks
+ - added custom description for weapons
+ - added exports for modifying/adding custom label description and serial numbers from weapons
+ - removed dataview file , using vorp core file instead.
+ - refactor opening custom inventories with a notify saying its busy
+ - item trade logs fixed
+ - added config file just for logs
+ - make sure to update all files
 <3.2>
 - added serial numbers for weapons 
 - added custom weapon nick names 

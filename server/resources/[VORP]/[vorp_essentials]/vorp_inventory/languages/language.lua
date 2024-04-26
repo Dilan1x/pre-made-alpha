@@ -3,6 +3,10 @@ TranslationInv = {}
 
 TranslationInv.Langs = {
     English = {
+
+
+
+        
         fullInventory             = "You are carrying to much weight, you can`t receive anything else",
         fullInventoryGive         = "That person is carrying to much weight, you can`t give that person more things",
         fullInventoryWeapon       = "You are carrying to much weapons, you cant receive anything else",
@@ -66,6 +70,35 @@ TranslationInv.Langs = {
         gaveMoney                 = "Gave money",
         withid                    = " with the weapon ID: ",
         serialnumber              = "Serial Number: ",
+        
+        
+        --Web hook Language
+        WebHookLang= {
+
+            serialnumber              = "Serial Number: ",
+            dropedwep                 = "this player Dropped this weapon",
+            gavewep                   = "Given weapon away ",
+            Weapontype                = "Weapon type",
+            charname                  = "Player Name",
+            Steamname                 = "Steam Name:",
+            moneypickup               = "Picked up money ",
+            money                     = "Money ",
+            amount                    = "Amount: ",
+            item                      = "Item",
+            move                      = "Moved to: ",
+            Took                      = "Took From",
+            itemDrop                  = "Item Droped",
+            gaveMoney                 = "Gave money",
+            give                      = "Given",
+            Desc                      = "Description",
+            with                      = "with",
+            By                        ="By",
+            pickedgold                = "Picked up Gold",
+            gold                      = "Gold",
+
+
+        }
+
     },
     Portugues_PT = {
         fullInventory             = "Muito peso nao podes dar mais coisas",
@@ -127,6 +160,36 @@ TranslationInv.Langs = {
         gave                      = "Deu Dinheiro",
         withid                    = " com o ID da arma: ",
         serialnumber              = "Número de série: ",
+
+
+               --Web hook Language
+        WebHookLang= {
+
+            serialnumber           = "Número de Série:",
+            dropedwep              = "Este jogador largou esta arma",
+            gavewep                = "Deu arma",
+            Weapontype             = "Tipo de arma",
+            charname               = "Nome do jogador",
+            Steamname              = "**Nome Steam:**",
+            moneypickup            = "Apanhou dinheiro",
+            money                  = "**Dinheiro**",
+            amount                 = "Quantidade:",
+            item                   = "Item",
+            move                   = "**Movido para:**",
+            Took                   = "Tirou de",
+            itemDrop               = "Item Largado",
+            gaveMoney              = "Deu dinheiro",
+            give                   = "Dado",
+            Desc                   = "Descrição",
+            with                   = "com",
+            By                     = "Por",
+            pickedgold = "Apanhou ouro",
+            gold = "Ouro"
+
+
+
+        }
+
 
     },
     Portugues_BR = {
@@ -194,6 +257,35 @@ TranslationInv.Langs = {
         withid                    = " com o ID da arma: ",
         serialnumber              = "Número de série: ",
 
+
+        WebHookLang = {
+
+            serialnumber          = "Número de Série:",
+            dropedwep             = "Este jogador largou esta arma",
+            gavewep               = "Deu a arma",
+            Weapontype            = "Tipo de arma",
+            charname              = "Nome do jogador",
+            Steamname             = "**Nome Steam:**",
+            moneypickup           = "Pegou dinheiro",
+            money                 = "**Dinheiro**",
+            amount                = "Quantidade:",
+            item                  = "Item",
+            move                  = "**Movido para:**",
+            Took                  = "Tirou de",
+            itemDrop              = "Item largado",
+            gaveMoney             = "Deu dinheiro",
+            give                  = "Dado",
+            Desc                  = "Descrição",
+            with                  = "com",
+            By                    = "Por",
+            pickedgold = "Pegou ouro",
+            gold = "Ouro"
+
+
+        }
+
+
+
     },
     Francais = {
         fullInventory             = "Vous portez trop de poids, vous ne pouvez rien recevoir d'autre",
@@ -255,6 +347,34 @@ TranslationInv.Langs = {
         gave                      = "Gave money",
         withid                    = " avec l'ID de l'arme: ",
         serialnumber              = "Numéro de série: ",
+
+
+        WebHookLang = {
+
+
+            serialnumber           = "Número de Série:",
+            dropedwep              = "Este jogador largou esta arma",
+            gavewep                = "Deu arma",
+            Weapontype             = "Tipo de arma",
+            charname               = "Nome do jogador",
+            Steamname              = "**Nome Steam:**",
+            moneypickup            = "Apanhou dinheiro",
+            money                  = "**Dinheiro**",
+            amount                 = "Quantidade:",
+            item                   = "Item",
+            move                   = "**Movido para:**",
+            Took                   = "Tirou de",
+            itemDrop               = "Item Largado",
+            gaveMoney              = "A donné de l'argent",
+            give                   = "Donné",
+            Desc                   = "Description",
+            with                   = "avec",
+            By                     = "Par",
+            pickedgold = "Or ramassé",
+            gold = "Or"
+
+
+        }
     },
     German = {
         fullInventory             = "Du kannst nicht noch mehr tragen",
@@ -316,6 +436,37 @@ TranslationInv.Langs = {
         gave                      = "Gave money",
         withid                    = " mit der Waffen ID: ",
         serialnumber              = "Seriennummer: ",
+
+
+        --Web hook Language
+        WebHookLang= {
+
+            serialnumber           = "Seriennummer:",
+            dropedwep              = "Dieser Spieler hat diese Waffe fallenlassen",
+            gavewep                = "Waffe abgegeben",
+            Weapontype             = "Waffentyp",
+            charname               = "Spielername",
+            Steamname              = "**Steamname:**",
+            moneypickup            = "Geld aufgehoben",
+            money                  = "**Geld**",
+            amount                 = "Menge:",
+            item                   = "Gegenstand",
+            move                   = "**Verschoben nach:**",
+            Took                   = "Genommen von",
+            itemDrop               = "Gegenstand abgelegt",
+            gaveMoney              = "Geld gegeben",
+            give                   = "Gegeben",
+            Desc                   = "Beschreibung",
+            with                   = "mit",
+            By                     = "Durch",
+            pickedgold = "Gold aufgehoben",
+            gold = "Gold"
+
+
+        }
+
+
+
     },
     Espanol = {
         fullInventory             = "Llevas demasiado peso encima no te pueden dar más cosas",
@@ -377,6 +528,34 @@ TranslationInv.Langs = {
         gave                      = "Gave money",
         withid                    = " con el ID de arma: ",
         serialnumber              = "Número de serie: ",
+
+        --Web hook Language
+        WebHookLang= {
+
+            serialnumber    = "Número de serie:",
+            dropedwep       = "Este jugador soltó esta arma",
+            gavewep         = "Entregó el arma",
+            Weapontype      = "Tipo de arma",
+            charname        = "Nombre del jugador",
+            Steamname       = "**Nombre de Steam:**",
+            moneypickup     = "Recogió dinero",
+            money           = "**Dinero**",
+            amount          = "Cantidad:",
+            item            = "Objeto",
+            move            = "**Movido a:**",
+            Took            = "Tomado de",
+            itemDrop        = "Objeto soltado",
+            gaveMoney       = "Dio dinero",
+            give            = "Dado",
+            Desc            = "Descripción",
+            with            = "con",
+            By              = "Por",
+            pickedgold = "Recogió oro",
+            gold = "Oro"
+
+
+        }
+
     },
     Italian = {
         fullInventory             = "Stai trasportando molte cose, non puoi prenderne altre!",
@@ -438,6 +617,36 @@ TranslationInv.Langs = {
         transfered                = " ha trasferito ",
         withid                    = " con ID arma: ",
         serialnumber              = "Numero di serie: ",
+
+        --Web hook Language
+        WebHookLang= {
+
+            serialnumber    = "Numero seriale:",
+            dropedwep       = "Questo giocatore ha lasciato questa arma",
+            gavewep         = "Ha dato l'arma",
+            Weapontype      = "Tipo di arma",
+            charname        = "Nome del giocatore",
+            Steamname       = "**Nome Steam:**",
+            moneypickup     = "Ha raccolto denaro",
+            money           = "**Denaro**",
+            amount          = "Quantità:",
+            item            = "Oggetto",
+            move            = "**Spostato in:**",
+            Took            = "Preso da",
+            itemDrop        = "Oggetto lasciato",
+            gaveMoney       = "Ha dato denaro",
+            give            = "Dato",
+            Desc            = "Descrizione",
+            with            = "con",
+            By              = "Di",
+            pickedgold = "Oro raccolto",
+            gold = "Oro"
+
+
+        }
+
+
+
     },
     Nederlandse = {
         fullInventory             = "Je draagt te veel gewicht, je kan niks meer dragen.",
@@ -502,6 +711,35 @@ TranslationInv.Langs = {
         gave                      = "Gave money",
         withid                    = " met wapen ID: ",
         serialnumber              = "Serienummer: ",
+
+
+        --Web hook Language
+        WebHookLang= {
+
+            serialnumber    = "Serienummer:",
+            dropedwep       = "Deze speler liet dit wapen vallen",
+            gavewep         = "Gaf wapen weg",
+            Weapontype      = "Wapentype",
+            charname        = "Spelersnaam",
+            Steamname       = "**Steamnaam:**",
+            moneypickup     = "Geld opgeraapt",
+            money           = "**Geld**",
+            amount          = "Hoeveelheid:",
+            item            = "Voorwerp",
+            move            = "**Verplaatst naar:**",
+            Took            = "Geplukt van",
+            itemDrop        = "Voorwerp laten vallen",
+            gaveMoney       = "Geld gegeven",
+            give            = "Gegeven",
+            Desc            = "Beschrijving",
+            with            = "met",
+            By              = "Door",
+            pickedgold = "Goud opgeraapt",
+            gold = "Goud"
+
+
+        }
+
     },
     Nynorsk = {
         fullInventory             = "Du bærer for mye, du kan ikke motta noe mer",
@@ -563,6 +801,31 @@ TranslationInv.Langs = {
         gave                      = "Gave money",
         withid                    = " med våpen ID: ",
         serialnumber              = "Serienummer: ",
+
+                --Web hook Language
+    WebHookLang= {
+        
+        serialnumber    = "Serienummer:",
+        dropedwep       = "Denne spelaren slapp dette våpenet",
+        gavewep         = "Ga veppen bort",
+        Weapontype      = "Våpentype",
+        charname        = "Spelarnamn",
+        Steamname       = "**Steamnamn:**",
+        moneypickup     = "Plukka opp pengar",
+        money           = "**Pengar**",
+        amount          = "Mengd:",
+        item            = "Gjenstand",
+        move            = "**Flytta til:**",
+        Took            = "Tok frå",
+        itemDrop        = "Gjenstand lagt frå",
+        gaveMoney       = "Gav pengar",
+        give            = "Gitt",
+        Desc            = "Beskriving",
+        with            = "med",
+        By              = "Av",
+        pickedgold = "Plukka opp gull",
+        gold = "Gull"   
+    }
     },
     Turkish = {
         fullInventory             = "Çok ağırlık taşıyorsun, başka bir şey alamazsın",
@@ -626,5 +889,123 @@ TranslationInv.Langs = {
         gave                      = "Gave money",
         withid                    = " with weapon ID: ",
         serialnumber              = "Seri numarası: ",
+
+
+
+                --Web hook Language
+        WebHookLang= {
+
+            serialnumber        = "Seri Numarası:",
+            dropedwep           = "Bu oyuncu bu silahı bıraktı",
+            gavewep             = "Silah verildi",
+            Weapontype          = "Silah türü",
+            charname            = "Oyuncu Adı",
+            Steamname           = "**Steam Adı:**",
+            moneypickup         = "Para toplandı",
+            money               = "**Para**",
+            amount              = "Miktar:",
+            item                = "Öğe",
+            move                = "**Taşındı:**",
+            Took                = "Alınan",
+            itemDrop            = "Öğe Düşürüldü",
+            gaveMoney           = "Para verildi",
+            give                = "Verilen",
+            Desc                = "Açıklama",
+            with                = "ile",
+            By                  = "Tarafından",
+            pickedgold = "Altın toplandı",
+            gold = "Altın"
+
+        }
+    },
+	
+    Romanian = {
+		fullInventory             = "Ați depășit greutatea maximă, nu puteți primi nimic în plus",
+		fullInventoryGive         = "Această persoană are prea multă greutate, nu-i poți da mai multe lucruri",
+		fullInventoryWeapon       = "Ați depășit limita de arme, nu puteți primi nimic în plus",
+		TryExploits               = "Nu încercați să păcăliți sistemul",
+		TakeFromFloor             = "Ridică",
+		NotEnoughMoney            = "Nu ai destui bani",
+		YouPaid                   = "Ai plătit $ ",
+		YouReceivedamount         = "Sumă primită: ",
+		YouReceived               = "Ai primit $ ",
+		YouReceivedItem           = "Ai primit un obiect",
+		yougaveitem               = "Ai dat un obiect",
+		itemerror                 = "Invalid",
+		youReceivedWeapon         = "Ai primit o armă",
+		youGaveWeapon             = "Ai dat o armă",
+		weppickup                 = "Armă ridicată",
+		itempickup                = "Obiect ridicat",
+		itempickup2               = "Ridicat: ",
+		NotEnoughGold             = "Nu ai destul aur",
+		TransactionLoading        = "Se încarcă...",
+		notenoughammo             = "Nu ai suficiente gloanțe",
+		fullammoyou               = "Această persoană nu poate purta mai multe gloanțe de acest tip",
+		fullammo                  = "Nu poți purta mai multe gloanțe de acest tip",
+		transferedammo            = "Ai dat gloanțe: ",
+		recammo                   = "Ai primit gloanțe: ",
+		emptyammo                 = "Gol",
+		prompttitle               = "Cantitate",
+		prompttitle2              = "Preț:",
+		promptaccept              = "Acceptă",
+		toplayerpromptitle        = "Selectează Jucătorul",
+		toplaterpromptaccept      = "Confirmă",
+		inventoryclose            = "Închide",
+		inventorysearch           = "Caută",
+		gunbeltlabel              = "Curea arme",
+		gunbeltdescription        = "Muniția ta",
+		inventorymoneylabel       = "Dolari",
+		inventorymoneydescription = "Banii tăi",
+		inventorygoldlabel        = "Aur",
+		inventorygolddescription  = "Aurul tău",
+		givemoney                 = "Dă bani",
+		dropmoney                 = "Lasă bani",
+		givegold                  = "Dă aur",
+		dropgold                  = "Lasă aur",
+		of                        = " din ",
+		to                        = " către ",
+		transfered                = " transferat ",
+		gaveitem                  = "transfer obiect",
+		yougive                   = "ai dat ",
+		youreceive                = "ai primit ",
+		unequip                   = "detrage",
+		equip                     = "echipează",
+		use                       = "folosește",
+		give                      = "dă",
+		drop                      = "lasă",
+		cantweapons               = "Nu poți purta mai multe arme",
+		cantweapons2              = "Persoana deja are prea multe arme",
+		slow                      = "Opriți încercarea de a trimite rapid obiecte!",
+		cansell                   = "Poate fi vândut pentru: $",
+		cantdrophere              = "nu poți lăsa aici",
+		cantgivehere              = "nu poți da aici",
+		noplayersnearby           = "Niciun jucător în apropiere",
+		gaveMoney                 = "Ai dat bani",
+		withid                    = " cu ID-ul armei: ",
+		serialnumber              = "Număr de serie: ",   
+        
+        --Web hook Language
+        WebHookLang= {
+			serialnumber              = "Număr de serie: ",
+			dropedwep                 = "Acest jucător a lăsat arma aceasta",
+			gavewep                   = "A dat arma",
+			Weapontype                = "Tip de armă",
+			charname                  = "Numele jucătorului",
+			Steamname                 = "Nume Steam:",
+			moneypickup               = "Bani luați ",
+			money                     = "Bani ",
+			amount                    = "Sumă: ",
+			item                      = "Obiect",
+			move                      = "Mutat la: ",
+			Took                      = "Luat de la",
+			itemDrop                  = "Obiect lăsat",
+			gaveMoney                 = "A dat bani",
+			give                      = "Dat",
+			Desc                      = "Descriere",
+			with                      = "cu",
+			By                        = "De",
+			pickedgold                = "A luat aurul",
+			gold                      = "Aur",
+        }
     }
 }

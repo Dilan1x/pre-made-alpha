@@ -11,12 +11,10 @@ MySQL.ready(function()
 					local label = db_weapon.label or SvUtils.GenerateWeaponLabel(db_weapon.name)
 					local serialNumber = db_weapon.serial_number or SvUtils.GenerateSerialNumber(db_weapon.name)
 					if not db_weapon.serial_number then
-						DBService.updateAsync('UPDATE loadout SET serial_number = @serial_number WHERE id = @id',
-							{ id = db_weapon.id, serial_number = serialNumber }, function() end)
+						DBService.updateAsync('UPDATE loadout SET serial_number = @serial_number WHERE id = @id', { id = db_weapon.id, serial_number = serialNumber }, function() end)
 					end
 					if not db_weapon.label then
-						DBService.updateAsync('UPDATE loadout SET label = @label WHERE id = @id',
-							{ id = db_weapon.id, label = label }, function() end)
+						DBService.updateAsync('UPDATE loadout SET label = @label WHERE id = @id', { id = db_weapon.id, label = label }, function() end)
 					end
 				end
 			end
@@ -82,7 +80,7 @@ end
 
 
 MySQL.ready(function()
-	-- load all items from databse
+	-- load all items from database
 	DBService.queryAsync("SELECT * FROM items", {}, function(result)
 		for _, db_item in pairs(result) do
 			if db_item.id then
@@ -112,6 +110,7 @@ MySQL.ready(function()
 		end
 	end)
 end)
+
 
 -- on player select character event
 RegisterNetEvent("vorp:SelectedCharacter", loadPlayerWeapons)

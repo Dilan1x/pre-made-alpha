@@ -193,10 +193,9 @@ end
 function SvUtils.DoesItemExist(itemName, api)
     if ServerItems[itemName] then
         return true
-    else
-        Log.error("[^2" .. api .. "7] Item [^3" .. tostring(itemName) .. "^7] does not exist in DB.")
-        return false
     end
+    print("[^2" .. api .. "7] Item [^3" .. tostring(itemName) .. "^7] does not exist in DB.")
+    return false
 end
 
 --- generate a weapon label
@@ -223,6 +222,14 @@ function SvUtils.filterWeaponsSerialNumber(name)
     return true
 end
 
+--- generate a unique random id
+---@return string
+function SvUtils.GenerateUniqueID()
+    local time = os.time()
+    local randomNum = math.random(1000000, 9999999)
+    return tostring(time) .. tostring(randomNum)
+end
+
 --- generate a unique serial number
 ---@return string
 function SvUtils.GenerateSerialNumber(name)
@@ -232,4 +239,10 @@ function SvUtils.GenerateSerialNumber(name)
     local timeStamp = os.time()
     local randomNumber = math.random(1000, 9999)
     return string.format("%s-%s", timeStamp, randomNumber)
+end
+
+--- discord webhook service
+---@param data {title: string, webhook: string, description: string, color: number, name: string, logo: string, footerlogo: string, avatar: string, source: number, target: number}
+function SvUtils.SendDiscordWebhook(data)
+    Core.AddWebhook(data.title, data.webhook, data.description, data.color, data.name)
 end
