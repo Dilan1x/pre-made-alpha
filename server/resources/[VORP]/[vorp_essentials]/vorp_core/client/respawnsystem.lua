@@ -14,15 +14,15 @@ local keepdown
 local function CheckLabel()
     if not carried then
         if not Done then
-            local label = CreateVarString(10, 'LITERAL_STRING',
+            local label = VarString(10, 'LITERAL_STRING',
                 T.RespawnIn .. TimeToRespawn .. T.SecondsMove .. T.message)
             return label
         else
-            local label = CreateVarString(10, 'LITERAL_STRING', T.message2)
+            local label = VarString(10, 'LITERAL_STRING', T.message2)
             return label
         end
     else
-        local label = CreateVarString(10, 'LITERAL_STRING', T.YouAreCarried)
+        local label = VarString(10, 'LITERAL_STRING', T.YouAreCarried)
         return label
     end
 end
@@ -66,9 +66,7 @@ local function ProcessNewPosition()
         y = pCoords.y + ((Sin(angleZ) * Cos(angleY)) + (Cos(angleY) * Sin(angleZ))) / 2 * (3.0 + 0.5),
         z = pCoords.z + ((Sin(angleY))) * (3.0 + 0.5)
     }
-    local rayHandle = StartShapeTestRay(pCoords.x, pCoords.y, pCoords.z + 0.5, behindCam.x, behindCam.y, behindCam.z, -1,
-        PlayerPedId(), 0)
-
+    local rayHandle = StartShapeTestLosProbe(pCoords.x, pCoords.y, pCoords.z + 0.5, behindCam.x, behindCam.y, behindCam.z, -1, PlayerPedId(), 0)
     local hitBool, hitCoords = GetShapeTestResult(rayHandle)
 
     local maxRadius = 3.0
@@ -137,10 +135,9 @@ function CoreAction.Player.ResurrectPlayer(currentHospital, currentHospitalName,
     Wait(200)
     EndDeathCam()
     TriggerServerEvent("vorp:ImDead", false)
-
-    TriggerServerEvent("vorp_core:Server:OnPlayerRevive")
-    TriggerEvent("vorp_core:Client:OnPlayerRevive")
-
+    -- this cant be here cause its triggering on revive and on respawn functions also these are client sided and people can exploit them, this has been move to server side
+    --TriggerServerEvent("vorp_core:Server:OnPlayerRevive")
+    -- TriggerEvent("vorp_core:Client:OnPlayerRevive")
     setDead = false
     DisplayHud(true)
     DisplayRadar(true)
@@ -174,11 +171,11 @@ function CoreAction.Player.ResurrectPlayer(currentHospital, currentHospitalName,
     end
 end
 
-function CoreAction.Player.RespawnPlayer(allow)
-    if allow then
-        TriggerServerEvent("vorp:PlayerForceRespawn")
+function CoreAction.Player.RespawnPlayer(allowCleanItems)
+    if allowCleanItems then
+        TriggerServerEvent("vorp:PlayerForceRespawn") -- inventory clean items
     end
-    TriggerEvent("vorp:PlayerForceRespawn")
+    TriggerEvent("vorp:PlayerForceRespawn")           -- inventory dead handler and metabolism , this need to be changed to the new events
     local closestDistance = math.huge
     local closestLocation = ""
     local coords = nil
@@ -186,8 +183,8 @@ function CoreAction.Player.RespawnPlayer(allow)
     for key, location in pairs(Config.Hospitals) do
         local locationCoords = vector3(location.pos.x, location.pos.y, location.pos.z)
         local currentDistance = #(pedCoords - locationCoords)
-
         if currentDistance < closestDistance then
+            closestDistance = currentDistance
             closestLocation = location.name
             coords = location.pos
         end
@@ -195,7 +192,7 @@ function CoreAction.Player.RespawnPlayer(allow)
 
     TriggerEvent("vorpmetabolism:changeValue", "Thirst", 1000)
     TriggerEvent("vorpmetabolism:changeValue", "Hunger", 1000)
-    CoreAction.Player.ResurrectPlayer(coords, closestLocation, false)
+    CoreAction.Player.ResurrectPlayer(coords, closestLocation, false) -- no need  to trigger events repawns even already triggered
 end
 
 -- CREATE PROMPT
@@ -205,7 +202,7 @@ CreateThread(function()
     local keyPress = Config.RespawnKey
     prompt = UiPromptRegisterBegin()
     UiPromptSetControlAction(prompt, keyPress)
-    str = CreateVarString(10, 'LITERAL_STRING', str)
+    str = VarString(10, 'LITERAL_STRING', str)
     UiPromptSetText(prompt, str)
     UiPromptSetEnabled(prompt, true)
     UiPromptSetVisible(prompt, true)
@@ -213,17 +210,6 @@ CreateThread(function()
     UiPromptSetGroup(prompt, prompts, 0)
     UiPromptSetPriority(prompt, 3)
     UiPromptRegisterEnd(prompt)
-end)
-
--- EVENTS
-RegisterNetEvent('vorp:resurrectPlayer', function(just)
-    local dont = false
-    local justrevive = just or true
-    CoreAction.Player.ResurrectPlayer(dont, nil, justrevive)
-end)
-
-RegisterNetEvent('vorp_core:respawnPlayer', function()
-    CoreAction.Player.RespawnPlayer()
 end)
 
 RegisterNetEvent("vorp_core:Client:AddTimeToRespawn")
@@ -250,26 +236,32 @@ CreateThread(function()
                 NetworkSetInSpectatorMode(false, PlayerPedId())
                 exports.spawnmanager.setAutoSpawn(false)
                 TriggerServerEvent("vorp:ImDead", true) -- internal event
-
-                TriggerServerEvent("vorp_core:Server:OnPlayerDeath")
-                TriggerEvent("vorp_core:Client:OnPlayerDeath")
-
+                local getKillerPed = GetPedSourceOfDeath(PlayerPedId())
+                local killerServerId = 0
+                if IsPedAPlayer(getKillerPed) then
+                    local killer = NetworkGetPlayerIndexFromPed(getKillerPed)
+                    if killer then
+                        killerServerId = GetPlayerServerId(killer)
+                    end
+                end
+                local deathCause = GetPedCauseOfDeath(PlayerPedId())
+                TriggerServerEvent("vorp_core:Server:OnPlayerDeath", killerServerId, deathCause)
+                TriggerEvent("vorp_core:Client:OnPlayerDeath", killerServerId, deathCause)
                 DisplayRadar(false)
-                CreateThread(function()
-                    RespawnTimer()
-                    StartDeathCam()
-                end)
+                CreateThread(RespawnTimer)
+                CreateThread(StartDeathCam)
             end
             if not PressKey and setDead then
                 sleep = 0
                 if not IsEntityAttachedToAnyPed(PlayerPedId()) then
-                    UiPromptSetActiveGroupThisFrame(prompts, CheckLabel())
+                    UiPromptSetActiveGroupThisFrame(prompts, CheckLabel(), 0, 0, 0, 0)
 
                     if UiPromptHasHoldModeCompleted(prompt) then
                         if Config.CanRespawn() then
                             DoScreenFadeOut(3000)
                             Wait(3000)
-                            CoreAction.Player.RespawnPlayer(true)
+                            TriggerServerEvent("vorp_core:PlayerRespawnInternal", true) -- needs to go to server so that the respawn event listeners are triggered
+                            Wait(1000)
                             PressKey      = true
                             carried       = false
                             Done          = false
@@ -289,7 +281,7 @@ CreateThread(function()
                     carried = false
                 else
                     if setDead then
-                        UiPromptSetActiveGroupThisFrame(prompts, CheckLabel())
+                        UiPromptSetActiveGroupThisFrame(prompts, CheckLabel(), 0, 0, 0, 0)
                         UiPromptSetEnabled(prompt, false)
                         ProcessCamControls()
                         carried = true

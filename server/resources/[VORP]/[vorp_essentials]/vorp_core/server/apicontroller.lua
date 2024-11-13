@@ -1,9 +1,3 @@
-if GetCurrentResourceName() ~= 'vorp_core' then
-    for i = 1, 5, 1 do
-        print("^3WARNING ^0 This resource is not named correctly, please change it to ^1'vorp_core'^0 to work properly.")
-    end
-end
-
 CoreFunctions = {}
 
 CoreFunctions.maxCharacters = function(source)
@@ -143,19 +137,23 @@ CoreFunctions.Whitelist = {
 CoreFunctions.Player = {
     Heal = function(source)
         if not source then return end
-        TriggerClientEvent('vorp:Heal', source)
+        TriggerEvent("vorp_core:Server:OnPlayerHeal", source)
+        TriggerClientEvent("vorp_core:Client:OnPlayerHeal", source)
     end,
     Revive = function(source, param)
         if not source then return end
-        TriggerClientEvent('vorp:ResurrectPlayer', source, param)
+        TriggerEvent("vorp_core:Server:OnPlayerRevive", source, param)
+        TriggerClientEvent("vorp_core:Client:OnPlayerRevive", source, param)
     end,
-    Respawn = function(source)
+    Respawn = function(source, param)
         if not source then return end
-        TriggerClientEvent('vorp_core:respawnPlayer', source)
+        TriggerEvent("vorp_core:Server:OnPlayerRespawn", source, param)
+        TriggerClientEvent("vorp_core:Client:OnPlayerRespawn", source, param)
     end,
 }
 
-CoreFunctions.Command = {
+-- WIP
+--[[ CoreFunctions.Command = {
 
     Register = function(data)
         if Commands[data.name] then
@@ -178,6 +176,8 @@ CoreFunctions.Command = {
         Commands[name] = nil
     end
 }
+ ]]
+
 
 --Example usage
 
@@ -208,6 +208,7 @@ CoreFunctions.Command = {
     }
 }
  ]]
+
 
 exports('GetCore', function()
     return CoreFunctions

@@ -1,3 +1,23 @@
+<2.8>
+- added new Skills feature for characters and its own getters and setters through character class 
+- new sql column needed to sue this version
+- new file created for skills in config folder
+- moved config to config folder
+- remove using vorp_menu in core export makes it as a dependency and users dont put menu before so it just errors, use vorp menu export
+- added old job old grade old group to the events that trigger when new ones are added
+- renamed statebag from Nickname to NickName 
+- added `OnPLayerDeath` event cause of death
+<2.7>
+- added CharId to the statebage Character
+- fix random respawn hospital location
+- fix setGroup command not notifying order was incorrect
+- refactor logic to save users hours in Database if enabled 
+- added ability to flag events to be fired or not  by character functions setJob setGroup and setGrade
+- added hide prompt photomode from pause menu since it doesnt work.
+- added priority for respawn prompt and added native declarations
+- refactor + optimisation of discord rich presence
+- added listener for notify TipBottom 
+- update all files including fxmanifest.lua
 <2.6>
 - new class for characters inv capacity (need to run sqlcode)
 - added character slots creation to user tables (need to run sqlcode)
